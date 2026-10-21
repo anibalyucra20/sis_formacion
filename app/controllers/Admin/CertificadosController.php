@@ -2,6 +2,11 @@
 
 namespace App\Controllers\Admin;
 
+include __DIR__ . '/../../models/Admin/Certificado.php';
+include __DIR__ . '/../../models/Admin/Curso.php';
+include __DIR__ . '/../../models/Admin/Persona.php';
+include __DIR__ . '/../../models/Admin/Configuracion.php';
+
 use Core\Controller;
 use Core\Auth;
 use App\Models\Admin\Certificado;
@@ -124,7 +129,7 @@ class CertificadosController extends Controller
 
         $id        = !empty($_POST['id']) ? (int)$_POST['id'] : null;
         $curso_id  = !empty($_POST['curso_id']) ? (int)$_POST['curso_id'] : null;
-        $persona_id= !empty($_POST['persona_id']) ? (int)$_POST['persona_id'] : null;
+        $persona_id = !empty($_POST['persona_id']) ? (int)$_POST['persona_id'] : null;
         $codigo    = strtoupper(trim($_POST['codigo_certificado'] ?? ''));
         $horas     = (int)($_POST['horas'] ?? 40);
         $nota      = trim($_POST['nota'] ?? '');
@@ -369,7 +374,6 @@ class CertificadosController extends Controller
 
             header('Location: ' . BASE_URL . '/admin/certificados');
             exit;
-
         } catch (\Exception $e) {
             $_SESSION['flash_error'] = 'Error al procesar el archivo Excel: ' . $e->getMessage();
             header('Location: ' . BASE_URL . '/admin/certificados/cargaMasiva');
@@ -387,15 +391,15 @@ class CertificadosController extends Controller
         $sheet->setTitle('Vinculacion_Certificados');
 
         $headers = [
-            'DNI', 
-            'NOMBRES', 
-            'APELLIDOS', 
-            'CORREO', 
-            'TELEFONO', 
-            'CODIGO_CERTIFICADO_OPCIONAL', 
-            'HORAS', 
-            'NOTA', 
-            'CONDICION', 
+            'DNI',
+            'NOMBRES',
+            'APELLIDOS',
+            'CORREO',
+            'TELEFONO',
+            'CODIGO_CERTIFICADO_OPCIONAL',
+            'HORAS',
+            'NOTA',
+            'CONDICION',
             'FECHA_EMISION'
         ];
         $cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
@@ -460,7 +464,7 @@ class CertificadosController extends Controller
     private function esAjax(): bool
     {
         return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-               strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
     }
 
     private function responderJson(array $data)

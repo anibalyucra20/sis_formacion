@@ -2,6 +2,9 @@
 
 namespace App\Controllers\Admin;
 
+include __DIR__ . '/../../models/Admin/Curso.php';
+include __DIR__ . '/../../models/Admin/Certificado.php';
+
 use Core\Controller;
 use Core\Auth;
 use App\Models\Admin\Curso;
@@ -119,7 +122,7 @@ class CursosController extends Controller
         $codigo    = strtoupper(trim($_POST['codigo'] ?? ''));
         $nombre    = trim($_POST['nombre'] ?? '');
         $horas     = (int)($_POST['horas_academicas'] ?? 40);
-        $instructor= trim($_POST['instructor'] ?? '');
+        $instructor = trim($_POST['instructor'] ?? '');
         $modalidad = $_POST['modalidad'] ?? 'Virtual';
         $estado    = $_POST['estado'] ?? 'Activo';
         $f_inicio  = !empty($_POST['fecha_inicio']) ? $_POST['fecha_inicio'] : null;
@@ -199,7 +202,7 @@ class CursosController extends Controller
     private function esAjax(): bool
     {
         return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-               strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
     }
 
     private function responderJson(array $data)

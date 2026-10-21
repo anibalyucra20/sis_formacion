@@ -2,6 +2,9 @@
 
 namespace App\Controllers\Admin;
 
+include __DIR__ . '/../../models/Admin/Certificado.php';
+include __DIR__ . '/../../models/Admin/Persona.php';
+
 use Core\Controller;
 use Core\Auth;
 use App\Models\Admin\Persona;
@@ -227,7 +230,6 @@ class PersonasController extends Controller
 
             header('Location: ' . BASE_URL . '/admin/personas');
             exit;
-
         } catch (\Exception $e) {
             $_SESSION['flash_error'] = 'Error al procesar el archivo Excel: ' . $e->getMessage();
             header('Location: ' . BASE_URL . '/admin/personas/cargaMasiva');
@@ -322,7 +324,7 @@ class PersonasController extends Controller
     private function esAjax(): bool
     {
         return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-               strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
     }
 
     private function responderJson(array $data)

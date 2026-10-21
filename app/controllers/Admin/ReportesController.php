@@ -2,6 +2,11 @@
 
 namespace App\Controllers\Admin;
 
+include __DIR__ . '/../../models/Admin/Certificado.php';
+include __DIR__ . '/../../models/Admin/Curso.php';
+include __DIR__ . '/../../models/Admin/Persona.php';
+include __DIR__ . '/../../models/Admin/Configuracion.php';
+
 use Core\Controller;
 use Core\Auth;
 use App\Models\Admin\Certificado;

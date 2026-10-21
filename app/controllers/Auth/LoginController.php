@@ -2,6 +2,8 @@
 
 namespace App\Controllers\Auth;
 
+include __DIR__ . '/../../models/Admin/Usuario.php';
+
 use Core\Controller;
 use Core\Model;
 use Core\Auth;
