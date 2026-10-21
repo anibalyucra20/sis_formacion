@@ -1,6 +1,6 @@
-# SIGI MVC
+# F MVC
 
-Sistema de Gestión Institucional con arquitectura MVC en PHP.
+Sistema de Formacion continua PHP.
 
 ## Requisitos
 - PHP 7.4+
@@ -11,4 +11,4 @@ Sistema de Gestión Institucional con arquitectura MVC en PHP.
 1. Ejecuta `composer install`
 2. Configura `config/config.php`
 3. Coloca tu proyecto en el directorio del servidor
-4. Accede mediante `http://localhost/sigi`
+4. Accede mediante `http://localhost/`
