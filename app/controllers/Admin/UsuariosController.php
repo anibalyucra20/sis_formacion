@@ -2,6 +2,9 @@
 
 namespace App\Controllers\Admin;
 
+include __DIR__ . '/../../models/Admin/Usuario.php';
+
+
 use Core\Controller;
 use Core\Auth;
 use App\Models\Admin\Usuario;
@@ -217,7 +220,7 @@ class UsuariosController extends Controller
         $apellidos = trim($_POST['apellidos'] ?? '');
         $email     = trim($_POST['email'] ?? '');
         $telefono  = trim($_POST['telefono'] ?? '');
-        $passActual= $_POST['password_actual'] ?? '';
+        $passActual = $_POST['password_actual'] ?? '';
         $passNueva = $_POST['password_nueva'] ?? '';
         $passConf  = $_POST['password_confirm'] ?? '';
 
@@ -346,7 +349,7 @@ class UsuariosController extends Controller
     private function esAjax(): bool
     {
         return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-               strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
     }
 
     private function responderJson(array $data)
