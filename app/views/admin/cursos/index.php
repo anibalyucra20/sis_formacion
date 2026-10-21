@@ -44,7 +44,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                         </select>
                     </div>
                     <div class="col-md-6 text-md-right mt-3 mt-md-0">
-                        <button type="button" id="btn-limpiar-filtros" class="btn btn-outline-secondary btn-sm font-weight-bold mt-3">
+                        <button type="button" id="btn-limpiar-filtros" class="btn btn-outline-info btn-sm font-weight-bold mt-3">
                             <i class="fa-solid fa-rotate-left mr-1"></i> Restablecer Filtros
                         </button>
                     </div>
@@ -58,11 +58,11 @@ require_once __DIR__ . '/../../layouts/header.php';
                                 <th>Código</th>
                                 <th>Nombre del Curso</th>
                                 <th>Horas</th>
-                                <th>Instructor</th>
+                                <!--<th>Instructor</th>-->
                                 <th>Modalidad</th>
                                 <th>Estado</th>
                                 <th>Certificados</th>
-                                <th class="text-center" style="width: 140px;">Acciones</th>
+                                <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -78,77 +78,82 @@ require_once __DIR__ . '/../../layouts/footer.php';
 ?>
 
 <script>
-$(document).ready(function() {
-    const table = $('#tabla-cursos').DataTable({
-        processing: true,
-        serverSide: true,
-        responsive: true,
-        order: [[0, 'desc']],
-        ajax: {
-            url: '<?= BASE_URL ?>/admin/cursos/data',
-            type: 'GET',
-            headers: { 'X-SIGI-DT': '1' },
-            data: function(d) {
-                d.estado = $('#filtro-estado').val();
-                d.modalidad = $('#filtro-modalidad').val();
-            }
-        },
-        columns: [
-            { data: 'id' },
-            { 
-                data: 'codigo',
-                render: function(data) {
-                    return '<span class="badge badge-light border text-primary font-weight-bold font-size-12">' + data + '</span>';
+    $(document).ready(function() {
+        const table = $('#tabla-cursos').DataTable({
+            processing: true,
+            serverSide: true,
+            responsive: true,
+            order: [
+                [0, 'desc']
+            ],
+            ajax: {
+                url: '<?= BASE_URL ?>/admin/cursos/data',
+                type: 'GET',
+                headers: {
+                    'X-SIGI-DT': '1'
+                },
+                data: function(d) {
+                    d.estado = $('#filtro-estado').val();
+                    d.modalidad = $('#filtro-modalidad').val();
                 }
             },
-            { 
-                data: 'nombre',
-                render: function(data, type, row) {
-                    return '<a href="<?= BASE_URL ?>/admin/cursos/detalle/' + row.id + '" class="font-weight-bold text-dark text-decoration-none">' + data + '</a>';
-                }
-            },
-            { 
-                data: 'horas_academicas',
-                render: function(data) {
-                    return '<span class="font-weight-bold">' + data + ' h</span>';
-                }
-            },
-            { 
-                data: 'instructor',
-                render: function(data) {
-                    return data ? data : '<span class="text-muted font-italic">No asignado</span>';
-                }
-            },
-            { 
-                data: 'modalidad',
-                render: function(data) {
-                    let badgeClass = 'badge-info';
-                    if (data === 'Presencial') badgeClass = 'badge-secondary';
-                    if (data === 'Semipresencial') badgeClass = 'badge-warning';
-                    return '<span class="badge ' + badgeClass + ' px-2 py-1">' + data + '</span>';
-                }
-            },
-            { 
-                data: 'estado',
-                render: function(data) {
-                    let badgeClass = 'badge-success';
-                    if (data === 'Finalizado') badgeClass = 'badge-danger';
-                    if (data === 'En Curso') badgeClass = 'badge-primary';
-                    return '<span class="badge ' + badgeClass + ' px-2 py-1 font-size-11">' + data + '</span>';
-                }
-            },
-            { 
-                data: 'total_certificados',
-                render: function(data) {
-                    return '<span class="badge badge-pill badge-primary px-2 font-weight-bold">' + data + '</span>';
-                }
-            },
-            {
-                data: null,
-                orderable: false,
-                className: 'text-center',
-                render: function(data, type, row) {
-                    return `
+            columns: [{
+                    data: 'id'
+                },
+                {
+                    data: 'codigo',
+                    render: function(data) {
+                        return '<span class="badge badge-light border text-primary font-weight-bold font-size-10">' + data + '</span>';
+                    }
+                },
+                {
+                    data: 'nombre',
+                    render: function(data, type, row) {
+                        return '<a href="<?= BASE_URL ?>/admin/cursos/detalle/' + row.id + '" class="font-weight-bold text-dark text-decoration-none">' + data + '</a>';
+                    }
+                },
+                {
+                    data: 'horas_academicas',
+                    render: function(data) {
+                        return '<span class="font-weight-bold">' + data + ' h</span>';
+                    }
+                },
+                /*{
+                    data: 'instructor',
+                    render: function(data) {
+                        return data ? data : '<span class="text-muted font-italic">No asignado</span>';
+                    }
+                }*/
+                {
+                    data: 'modalidad',
+                    render: function(data) {
+                        let badgeClass = 'badge-info';
+                        if (data === 'Presencial') badgeClass = 'badge-secondary';
+                        if (data === 'Semipresencial') badgeClass = 'badge-warning';
+                        return '<span class="badge ' + badgeClass + ' px-2 py-1">' + data + '</span>';
+                    }
+                },
+                {
+                    data: 'estado',
+                    render: function(data) {
+                        let badgeClass = 'badge-success';
+                        if (data === 'Finalizado') badgeClass = 'badge-danger';
+                        if (data === 'En Curso') badgeClass = 'badge-primary';
+                        return '<span class="badge ' + badgeClass + ' px-2 py-1 font-size-10">' + data + '</span>';
+                    }
+                },
+                {
+                    data: 'total_certificados',
+                    render: function(data) {
+                        return '<span class="badge badge-pill badge-primary px-2 font-weight-bold">' + data + '</span>';
+                    }
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    className: 'text-center',
+                    render: function(data, type, row) {
+                        return `
                         <div class="btn-group btn-group-sm" role="group">
                             <a href="<?= BASE_URL ?>/admin/cursos/detalle/${row.id}" class="btn btn-outline-info" title="Ver Detalle y Alumnos">
                                 <i class="fa-solid fa-eye"></i>
@@ -161,56 +166,56 @@ $(document).ready(function() {
                             </button>
                         </div>
                     `;
-                }
-            }
-        ]
-    });
-
-
-    $('#filtro-estado, #filtro-modalidad').on('change', function() {
-        table.ajax.reload();
-    });
-
-    $('#btn-limpiar-filtros').on('click', function() {
-        $('#filtro-estado').val('');
-        $('#filtro-modalidad').val('');
-        table.ajax.reload();
-    });
-
-    // Eliminar con SweetAlert2
-    $(document).on('click', '.btn-eliminar', function() {
-        const id = $(this).data('id');
-        const nombre = $(this).data('nombre');
-
-        Swal.fire({
-            title: '¿Eliminar curso?',
-            text: `Está a punto de eliminar el curso "${nombre}". Esta acción no se puede deshacer.`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '<?= BASE_URL ?>/admin/cursos/eliminar/' + id,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(res) {
-                        if (res.success) {
-                            Swal.fire('¡Eliminado!', res.message, 'success');
-                            table.ajax.reload(null, false);
-                        } else {
-                            Swal.fire('Atención', res.message, 'error');
-                        }
-                    },
-                    error: function() {
-                        Swal.fire('Error', 'Ocurrió un error en la solicitud', 'error');
                     }
-                });
-            }
+                }
+            ]
+        });
+
+
+        $('#filtro-estado, #filtro-modalidad').on('change', function() {
+            table.ajax.reload();
+        });
+
+        $('#btn-limpiar-filtros').on('click', function() {
+            $('#filtro-estado').val('');
+            $('#filtro-modalidad').val('');
+            table.ajax.reload();
+        });
+
+        // Eliminar con SweetAlert2
+        $(document).on('click', '.btn-eliminar', function() {
+            const id = $(this).data('id');
+            const nombre = $(this).data('nombre');
+
+            Swal.fire({
+                title: '¿Eliminar curso?',
+                text: `Está a punto de eliminar el curso "${nombre}". Esta acción no se puede deshacer.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '<?= BASE_URL ?>/admin/cursos/eliminar/' + id,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(res) {
+                            if (res.success) {
+                                Swal.fire('¡Eliminado!', res.message, 'success');
+                                table.ajax.reload(null, false);
+                            } else {
+                                Swal.fire('Atención', res.message, 'error');
+                            }
+                        },
+                        error: function() {
+                            Swal.fire('Error', 'Ocurrió un error en la solicitud', 'error');
+                        }
+                    });
+                }
+            });
         });
     });
-});
 </script>

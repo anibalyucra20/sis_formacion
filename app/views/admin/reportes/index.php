@@ -24,11 +24,8 @@ require_once __DIR__ . '/../../layouts/header.php';
         <div class="card">
             <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between">
                 <h5 class="card-title font-weight-bold mb-0 font-size-15">
-                    <i class="fa-solid fa-filter mr-2 text-primary"></i> Filtros de Reporte (Filtrado Automático)
+                    <i class="fa-solid fa-filter mr-2 text-primary"></i> Filtros de Reporte
                 </h5>
-                <span class="badge badge-light border text-muted font-size-11">
-                    <i class="fa-solid fa-bolt text-warning mr-1"></i> Los resultados se actualizan en tiempo real
-                </span>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -65,7 +62,7 @@ require_once __DIR__ . '/../../layouts/header.php';
 
                     <!-- Botón Limpiar -->
                     <div class="col-md-1 mb-3 d-flex align-items-end">
-                        <button type="button" id="btn-limpiar" class="btn btn-outline-secondary btn-sm btn-block" title="Restablecer filtros">
+                        <button type="button" id="btn-limpiar" class="btn btn-outline-info btn-sm btn-block" title="Restablecer filtros">
                             <i class="fa-solid fa-rotate-left"></i>
                         </button>
                     </div>
@@ -83,9 +80,6 @@ require_once __DIR__ . '/../../layouts/header.php';
                 <h5 class="card-title font-weight-bold mb-0 font-size-15">
                     <i class="fa-solid fa-table-list mr-2 text-primary"></i> Registros de Certificados Emitidos
                 </h5>
-                <button type="button" class="btn btn-outline-secondary btn-sm font-weight-bold" onclick="window.print();">
-                    <i class="fa-solid fa-print mr-1"></i> Imprimir Vista
-                </button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -116,133 +110,136 @@ require_once __DIR__ . '/../../layouts/footer.php';
 ?>
 
 <script>
-$(document).ready(function() {
-    // Función para actualizar enlace de exportación Excel con filtros activos
-    function actualizarEnlaceExcel() {
-        const cursoId = $('#filtro-curso').val();
-        const desde   = $('#filtro-desde').val();
-        const hasta   = $('#filtro-hasta').val();
-        const dni     = $('#filtro-dni').val().trim();
+    $(document).ready(function() {
+        // Función para actualizar enlace de exportación Excel con filtros activos
+        function actualizarEnlaceExcel() {
+            const cursoId = $('#filtro-curso').val();
+            const desde = $('#filtro-desde').val();
+            const hasta = $('#filtro-hasta').val();
+            const dni = $('#filtro-dni').val().trim();
 
-        let url = '<?= BASE_URL ?>/admin/reportes/exportarExcel?';
-        const params = [];
-        if (cursoId) params.push('curso_id=' + encodeURIComponent(cursoId));
-        if (desde) params.push('desde=' + encodeURIComponent(desde));
-        if (hasta) params.push('hasta=' + encodeURIComponent(hasta));
-        if (dni) params.push('dni=' + encodeURIComponent(dni));
+            let url = '<?= BASE_URL ?>/admin/reportes/exportarExcel?';
+            const params = [];
+            if (cursoId) params.push('curso_id=' + encodeURIComponent(cursoId));
+            if (desde) params.push('desde=' + encodeURIComponent(desde));
+            if (hasta) params.push('hasta=' + encodeURIComponent(hasta));
+            if (dni) params.push('dni=' + encodeURIComponent(dni));
 
-        $('#btn-exportar-excel').attr('href', url + params.join('&'));
-    }
+            $('#btn-exportar-excel').attr('href', url + params.join('&'));
+        }
 
-    // Inicializar DataTable Server-Side con filtros automáticos
-    const table = $('#tabla-reportes').DataTable({
-        processing: true,
-        serverSide: true,
-        responsive: true,
-        pageLength: 10,
-        lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
-        order: [[0, 'desc']],
-        ajax: {
-            url: '<?= BASE_URL ?>/admin/reportes/data',
-            type: 'GET',
-            headers: { 'X-SIGI-DT': '1' },
-            data: function(d) {
-                d.curso_id = $('#filtro-curso').val();
-                d.desde    = $('#filtro-desde').val();
-                d.hasta    = $('#filtro-hasta').val();
-                d.dni      = $('#filtro-dni').val().trim();
-            }
-        },
-        columns: [
-            { data: 'id' },
-            { 
-                data: 'codigo_certificado',
-                render: function(data) {
-                    return '<span class="badge badge-light border text-primary font-weight-bold font-size-12 px-2 py-1">' + data + '</span>';
+        // Inicializar DataTable Server-Side con filtros automáticos
+        const table = $('#tabla-reportes').DataTable({
+            processing: true,
+            serverSide: true,
+            responsive: true,
+            pageLength: 10,
+            lengthMenu: [
+                [10, 25, 50, 100],
+                [10, 25, 50, 100]
+            ],
+            order: [
+                [0, 'desc']
+            ],
+            ajax: {
+                url: '<?= BASE_URL ?>/admin/reportes/data',
+                type: 'GET',
+                headers: {
+                    'X-SIGI-DT': '1'
+                },
+                data: function(d) {
+                    d.curso_id = $('#filtro-curso').val();
+                    d.desde = $('#filtro-desde').val();
+                    d.hasta = $('#filtro-hasta').val();
+                    d.dni = $('#filtro-dni').val().trim();
                 }
             },
-            { 
-                data: 'dni',
-                render: function(data) {
-                    return '<span class="font-weight-bold text-dark">' + data + '</span>';
-                }
-            },
-            { data: 'participante', className: 'font-weight-bold' },
-            { 
-                data: 'curso_nombre',
-                render: function(data, type, row) {
-                    return '<div class="text-truncate" style="max-width: 250px;" title="' + data + '">' +
-                           '<span class="badge badge-light border mr-1 font-size-11">' + row.curso_codigo + '</span> ' + data + '</div>';
-                }
-            },
-            { 
-                data: 'horas',
-                render: function(data) {
-                    return '<span class="font-weight-bold text-primary">' + data + ' h</span>';
-                }
-            },
-            { 
-                data: 'condicion',
-                render: function(data) {
-                    return '<span class="badge badge-success px-2 py-1 font-size-11">' + data + '</span>';
-                }
-            },
-            { 
-                data: 'fecha_emision',
-                render: function(data) {
-                    return data ? data.substring(0, 10) : '';
-                }
-            },
-            {
-                data: null,
-                orderable: false,
-                className: 'text-center',
-                render: function(data, type, row) {
-                    return `
+            columns: [{
+                    data: 'id'
+                },
+                {
+                    data: 'codigo_certificado',
+                },
+                {
+                    data: 'dni',
+                },
+                {
+                    data: 'participante',
+                },
+                {
+                    data: 'curso_nombre',
+                    render: function(data, type, row) {
+                        return '<div class="text-truncate" style="max-width: 250px;" title="' + data + '">' + data + '</div>';
+                    }
+                },
+                {
+                    data: 'horas',
+                    render: function(data) {
+                        return '<span class="">' + data + ' h</span>';
+                    }
+                },
+                {
+                    data: 'condicion',
+                    render: function(data) {
+                        return '<span class="badge badge-success px-2 py-1 font-size-11">' + data + '</span>';
+                    }
+                },
+                {
+                    data: 'fecha_emision',
+                    render: function(data) {
+                        return data ? data.substring(0, 10) : '';
+                    }
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    className: 'text-center',
+                    render: function(data, type, row) {
+                        return `
                         <div class="btn-group btn-group-sm" role="group">
-                            <a href="<?= BASE_URL ?>/consulta/pdf/${encodeURIComponent(row.codigo_certificado)}" target="_blank" class="btn btn-outline-danger" title="Descargar PDF" data-no-loader="true">
+                            <a href="<?= BASE_URL ?>/consulta/pdf/${encodeURIComponent(row.codigo_certificado)}" target="_blank" class="btn btn-outline-info" title="Descargar PDF" data-no-loader="true">
                                 <i class="fa-solid fa-file-pdf"></i>
                             </a>
-                            <a href="<?= BASE_URL ?>/verificar/${encodeURIComponent(row.codigo_certificado)}" target="_blank" class="btn btn-outline-info" title="Verificar Digital" data-no-loader="true">
+                            <a href="<?= BASE_URL ?>/verificar/${encodeURIComponent(row.codigo_certificado)}" target="_blank" class="btn btn-outline-success" title="Verificar Digital" data-no-loader="true">
                                 <i class="fa-solid fa-shield-halved"></i>
                             </a>
                         </div>
                     `;
+                    }
                 }
-            }
-        ]
-    });
+            ]
+        });
 
-    // Filtro automático al cambiar el curso
-    $('#filtro-curso').on('change', function() {
-        actualizarEnlaceExcel();
-        table.ajax.reload();
-    });
-
-    // Filtro automático al cambiar fechas
-    $('#filtro-desde, #filtro-hasta').on('change', function() {
-        actualizarEnlaceExcel();
-        table.ajax.reload();
-    });
-
-    // Filtro automático con debounce al escribir en el DNI
-    let timerDni = null;
-    $('#filtro-dni').on('keyup', function() {
-        clearTimeout(timerDni);
-        timerDni = setTimeout(function() {
+        // Filtro automático al cambiar el curso
+        $('#filtro-curso').on('change', function() {
             actualizarEnlaceExcel();
             table.ajax.reload();
-        }, 350);
-    });
+        });
 
-    // Botón para limpiar filtros
-    $('#btn-limpiar').on('click', function() {
-        $('#filtro-curso').val('');
-        $('#filtro-desde').val('');
-        $('#filtro-hasta').val('');
-        $('#filtro-dni').val('');
-        actualizarEnlaceExcel();
-        table.ajax.reload();
+        // Filtro automático al cambiar fechas
+        $('#filtro-desde, #filtro-hasta').on('change', function() {
+            actualizarEnlaceExcel();
+            table.ajax.reload();
+        });
+
+        // Filtro automático con debounce al escribir en el DNI
+        let timerDni = null;
+        $('#filtro-dni').on('keyup', function() {
+            clearTimeout(timerDni);
+            timerDni = setTimeout(function() {
+                actualizarEnlaceExcel();
+                table.ajax.reload();
+            }, 350);
+        });
+
+        // Botón para limpiar filtros
+        $('#btn-limpiar').on('click', function() {
+            $('#filtro-curso').val('');
+            $('#filtro-desde').val('');
+            $('#filtro-hasta').val('');
+            $('#filtro-dni').val('');
+            actualizarEnlaceExcel();
+            table.ajax.reload();
+        });
     });
-});
 </script>

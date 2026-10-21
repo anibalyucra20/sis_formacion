@@ -19,7 +19,7 @@ require_once __DIR__ . '/../../layouts/header.php';
 </div>
 
 <div class="row justify-content-center">
-    <div class="col-lg-9">
+    <div class="col-lg-12">
         <div class="card">
             <div class="card-header bg-white py-3">
                 <h5 class="card-title font-weight-bold mb-0" style="font-size: 15px;">
@@ -121,11 +121,11 @@ require_once __DIR__ . '/../../layouts/footer.php';
 ?>
 
 <script>
-$('#curso_id').on('change', function() {
-    const selected = $(this).find(':selected');
-    const horas = selected.data('horas');
-    if (horas) {
-        $('#horas').val(horas);
-    }
-});
+    $('#curso_id').on('change', function() {
+        const selected = $(this).find(':selected');
+        const horas = selected.data('horas');
+        if (horas) {
+            $('#horas').val(horas);
+        }
+    });
 </script>

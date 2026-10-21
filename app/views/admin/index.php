@@ -104,7 +104,7 @@ require_once __DIR__ . '/../layouts/header.php';
 <!-- Main Section: Quick Actions & Top Courses -->
 <div class="row">
     <!-- Últimos Certificados Emitidos -->
-    <div class="col-lg-8 mb-4">
+    <!--<div class="col-lg-8 mb-4">
         <div class="card h-100">
             <div class="card-header bg-white d-flex align-items-center justify-content-between py-3">
                 <h5 class="card-title font-weight-bold mb-0" style="font-size: 15px;">
@@ -173,12 +173,12 @@ require_once __DIR__ . '/../layouts/header.php';
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <!-- Accesos Rápidos y Top Cursos -->
     <div class="col-lg-4 mb-4">
         <!-- Accesos directos -->
-        <div class="card mb-4">
+        <!--<div class="card mb-4">
             <div class="card-header bg-white py-3">
                 <h5 class="card-title font-weight-bold mb-0" style="font-size: 15px;">
                     <i class="fa-solid fa-bolt mr-2 text-warning"></i> Operaciones Rápidas
@@ -205,9 +205,10 @@ require_once __DIR__ . '/../layouts/header.php';
                 </div>
             </div>
         </div>
+        -->
 
         <!-- Top Cursos con más alumnos certificados -->
-        <div class="card">
+        <!--<div class="card">
             <div class="card-header bg-white py-3">
                 <h5 class="card-title font-weight-bold mb-0" style="font-size: 15px;">
                     <i class="fa-solid fa-fire mr-2 text-danger"></i> Cursos más Solicitados
@@ -232,6 +233,7 @@ require_once __DIR__ . '/../layouts/header.php';
                 </ul>
             </div>
         </div>
+        -->
     </div>
 </div>
 

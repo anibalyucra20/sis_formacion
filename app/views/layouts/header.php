@@ -17,62 +17,69 @@ $userId = $_SESSION['user_id'] ?? 1;
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  
+
   <link href="<?= BASE_URL ?>/assets/css/bootstrap.min.css" rel="stylesheet" />
   <link href="<?= BASE_URL ?>/assets/css/sweetalert2.min.css" rel="stylesheet" />
   <link href="<?= BASE_URL ?>/assets/css/icons.min.css" rel="stylesheet" />
   <link href="<?= BASE_URL ?>/assets/css/theme.min.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
+
   <!-- DataTables -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap4.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
 
-  <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/img/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="https://iesphuanta.edu.pe/wp-content/uploads/2021/12/WhatsApp-Image-2025-09-17-at-12.55.48-PM-Photoroom.png">
 
   <style>
     body {
       font-family: 'Plus Jakarta Sans', sans-serif !important;
       background-color: #f4f6f9;
     }
+
     .navbar-header {
       background: #ffffff;
       border-bottom: 1px solid #e9ecef;
     }
+
     .topnav {
       background: #1e293b;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
+
     .topnav .navbar-nav .nav-link {
       color: #cbd5e1 !important;
       font-weight: 500;
       padding: 1rem 1.15rem;
       font-size: 14px;
     }
+
     .topnav .navbar-nav .nav-link:hover,
     .topnav .navbar-nav .nav-link.active {
       color: #ffffff !important;
-      background: rgba(255,255,255,0.08);
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 6px;
     }
+
     .brand-title {
       font-weight: 800;
-      font-size: 17px;
+      font-size: 15px;
       color: #1e3a8a;
       letter-spacing: -0.02em;
     }
+
     .card {
       border-radius: 12px;
       border: 1px solid #e2e8f0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
     }
+
     .table thead th {
       border-top: none;
       background: #f8fafc;
       color: #475569;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 10px;
     }
   </style>
 </head>
@@ -84,12 +91,9 @@ $userId = $_SESSION['user_id'] ?? 1;
       <div class="navbar-header">
         <div class="navbar-brand-box d-flex align-items-center">
           <a href="<?= BASE_URL ?>/admin" class="logo d-flex align-items-center text-decoration-none" style="gap: 10px;">
-            <div style="width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 18px;">
-              <i class="fa-solid fa-award"></i>
-            </div>
+            <img src="https://iesphuanta.edu.pe/wp-content/uploads/2021/12/WhatsApp-Image-2025-09-17-at-12.55.48-PM-Photoroom.png" alt="" width="100" height="50" style="border-radius: 8px;">
             <div>
               <span class="brand-title d-block" style="line-height: 1.1;">CERTIFICADOS</span>
-              <small class="text-muted font-size-11">Control y Emisión</small>
             </div>
           </a>
           <button type="button" class="btn btn-sm mr-2 font-size-16 d-lg-none header-item waves-effect waves-light"

@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                 <p class="text-muted font-size-13 mb-0">Actualización de usuario: <strong><?= htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellidos']) ?></strong></p>
             </div>
             <div>
-                <a href="<?= BASE_URL ?>/admin/usuarios" class="btn btn-outline-secondary font-weight-bold" style="border-radius: 8px;">
+                <a href="<?= BASE_URL ?>/admin/usuarios" class="btn btn-outline-info font-weight-bold" style="border-radius: 8px;">
                     <i class="fa-solid fa-arrow-left mr-1"></i> Volver a la Lista
                 </a>
             </div>
@@ -19,7 +19,7 @@ require_once __DIR__ . '/../../layouts/header.php';
 </div>
 
 <div class="row justify-content-center">
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <div class="card">
             <div class="card-header bg-white py-3">
                 <h5 class="card-title font-weight-bold mb-0" style="font-size: 15px;">
@@ -60,8 +60,8 @@ require_once __DIR__ . '/../../layouts/header.php';
                         <div class="col-md-6 mb-3">
                             <label class="form-label font-weight-bold font-size-13">Estado</label>
                             <select name="activo" class="form-control">
-                                <option value="1" <?= $usuario['activo'] == 1 ? 'selected' : '' ?>>Activo (Habilitado)</option>
-                                <option value="0" <?= $usuario['activo'] == 0 ? 'selected' : '' ?>>Inactivo (Deshabilitado)</option>
+                                <option value="1" <?= $usuario['activo'] == 1 ? 'selected' : '' ?>>Activo</option>
+                                <option value="0" <?= $usuario['activo'] == 0 ? 'selected' : '' ?>>Inactivo</option>
                             </select>
                         </div>
                     </div>
@@ -71,7 +71,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                             <i class="fa-solid fa-key mr-1"></i> Enviar Enlace de Restablecimiento por Correo
                         </a>
                         <div style="gap: 10px;" class="d-flex">
-                            <a href="<?= BASE_URL ?>/admin/usuarios" class="btn btn-outline-secondary font-weight-bold px-4">Cancelar</a>
+                            <a href="<?= BASE_URL ?>/admin/usuarios" class="btn btn-outline-danger font-weight-bold px-4">Cancelar</a>
                             <button type="submit" class="btn btn-primary font-weight-bold px-4">
                                 <i class="fa-solid fa-save mr-1"></i> Guardar Cambios
                             </button>

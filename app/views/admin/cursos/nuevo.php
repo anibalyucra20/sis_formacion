@@ -7,10 +7,9 @@ require_once __DIR__ . '/../../layouts/header.php';
         <div class="page-title-box d-flex align-items-center justify-content-between pb-3">
             <div>
                 <h4 class="mb-1 font-weight-bold" style="color: #1e293b;">Nuevo Curso o Capacitación</h4>
-                <p class="text-muted font-size-13 mb-0">Registre un nuevo programa formativo para la emisión de certificados</p>
             </div>
             <div>
-                <a href="<?= BASE_URL ?>/admin/cursos" class="btn btn-outline-secondary font-weight-bold" style="border-radius: 8px;">
+                <a href="<?= BASE_URL ?>/admin/cursos" class="btn btn-outline-info font-weight-bold" style="border-radius: 8px;">
                     <i class="fa-solid fa-arrow-left mr-1"></i> Volver a la Lista
                 </a>
             </div>
@@ -19,7 +18,7 @@ require_once __DIR__ . '/../../layouts/header.php';
 </div>
 
 <div class="row justify-content-center">
-    <div class="col-lg-10">
+    <div class="col-lg-12">
         <div class="card">
             <div class="card-header bg-white py-3">
                 <h5 class="card-title font-weight-bold mb-0" style="font-size: 15px;">
@@ -84,7 +83,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                     </div>
 
                     <div class="d-flex justify-content-end" style="gap: 10px;">
-                        <a href="<?= BASE_URL ?>/admin/cursos" class="btn btn-outline-secondary font-weight-bold px-4">Cancelar</a>
+                        <a href="<?= BASE_URL ?>/admin/cursos" class="btn btn-outline-danger font-weight-bold px-4">Cancelar</a>
                         <button type="submit" class="btn btn-primary font-weight-bold px-4">
                             <i class="fa-solid fa-save mr-1"></i> Guardar Curso
                         </button>

@@ -7,10 +7,10 @@ require_once __DIR__ . '/../../layouts/header.php';
         <div class="page-title-box d-flex align-items-center justify-content-between pb-3">
             <div>
                 <h4 class="mb-1 font-weight-bold" style="color: #1e293b;"><?= htmlspecialchars($curso['nombre']) ?></h4>
-                <p class="text-muted font-size-13 mb-0">Código: <span class="badge badge-light border text-primary font-weight-bold"><?= htmlspecialchars($curso['codigo']) ?></span> • Modalidad: <strong><?= htmlspecialchars($curso['modalidad']) ?></strong> • Horas: <strong><?= $curso['horas_academicas'] ?> h</strong></p>
+                <p class="text-muted font-size-13 mb-0">Código: <span class="font-weight-bold"><?= htmlspecialchars($curso['codigo']) ?></span> • Modalidad: <strong><?= htmlspecialchars($curso['modalidad']) ?></strong> • Horas: <strong><?= $curso['horas_academicas'] ?> h</strong></p>
             </div>
             <div style="gap: 10px;" class="d-flex">
-                <a href="<?= BASE_URL ?>/admin/cursos" class="btn btn-outline-secondary font-weight-bold" style="border-radius: 8px;">
+                <a href="<?= BASE_URL ?>/admin/cursos" class="btn btn-outline-info font-weight-bold" style="border-radius: 8px;">
                     <i class="fa-solid fa-arrow-left mr-1"></i> Volver a Cursos
                 </a>
                 <a href="<?= BASE_URL ?>/admin/certificados/nuevo?curso_id=<?= $curso['id'] ?>" class="btn btn-primary font-weight-bold" style="border-radius: 8px;">
@@ -95,7 +95,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                                             <small class="text-muted"><?= htmlspecialchars($a['email'] ?? '') ?></small>
                                         </td>
                                         <td>
-                                            <span class="badge badge-light border text-dark font-weight-bold">
+                                            <span class="text-dark font-weight-bold">
                                                 <?= htmlspecialchars($a['codigo_certificado']) ?>
                                             </span>
                                         </td>

@@ -14,7 +14,7 @@ $currentUri = $_SERVER['REQUEST_URI'] ?? '';
             <!-- Cursos / Capacitaciones -->
             <li class="nav-item">
                 <a class="nav-link <?= (strpos($currentUri, '/admin/cursos') !== false ? 'active' : '') ?>" href="<?= BASE_URL ?>/admin/cursos">
-                    <i class="mdi mdi-book-education mr-1"></i> Cursos
+                    <i class="mdi mdi-book mr-1"></i> Cursos
                 </a>
             </li>
 

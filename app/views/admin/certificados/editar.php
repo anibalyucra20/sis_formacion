@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                 <p class="text-muted font-size-13 mb-0">Certificado código: <strong><?= htmlspecialchars($certificado['codigo_certificado']) ?></strong></p>
             </div>
             <div>
-                <a href="<?= BASE_URL ?>/admin/certificados" class="btn btn-outline-secondary font-weight-bold" style="border-radius: 8px;">
+                <a href="<?= BASE_URL ?>/admin/certificados" class="btn btn-outline-info font-weight-bold" style="border-radius: 8px;">
                     <i class="fa-solid fa-arrow-left mr-1"></i> Volver a la Lista
                 </a>
             </div>
@@ -19,7 +19,7 @@ require_once __DIR__ . '/../../layouts/header.php';
 </div>
 
 <div class="row justify-content-center">
-    <div class="col-lg-9">
+    <div class="col-lg-12">
         <div class="card">
             <div class="card-header bg-white py-3">
                 <h5 class="card-title font-weight-bold mb-0" style="font-size: 15px;">
@@ -102,15 +102,15 @@ require_once __DIR__ . '/../../layouts/header.php';
 
                     <div class="d-flex justify-content-between align-items-center">
                         <div style="gap: 8px;" class="d-flex">
-                            <a href="<?= BASE_URL ?>/consulta/pdf/<?= urlencode($certificado['codigo_certificado']) ?>" target="_blank" class="btn btn-outline-danger btn-sm font-weight-bold">
+                            <a href="<?= BASE_URL ?>/consulta/pdf/<?= urlencode($certificado['codigo_certificado']) ?>" target="_blank" class="btn btn-outline-info btn-sm font-weight-bold">
                                 <i class="fa-solid fa-file-pdf mr-1"></i> Ver PDF Oficial
                             </a>
-                            <a href="<?= BASE_URL ?>/verificar/<?= urlencode($certificado['codigo_certificado']) ?>" target="_blank" class="btn btn-outline-info btn-sm font-weight-bold">
+                            <a href="<?= BASE_URL ?>/verificar/<?= urlencode($certificado['codigo_certificado']) ?>" target="_blank" class="btn btn-outline-success btn-sm font-weight-bold">
                                 <i class="fa-solid fa-shield-halved mr-1"></i> Ver Verificación
                             </a>
                         </div>
                         <div style="gap: 10px;" class="d-flex">
-                            <a href="<?= BASE_URL ?>/admin/certificados" class="btn btn-outline-secondary font-weight-bold px-4">Cancelar</a>
+                            <a href="<?= BASE_URL ?>/admin/certificados" class="btn btn-outline-danger font-weight-bold px-4">Cancelar</a>
                             <button type="submit" class="btn btn-primary font-weight-bold px-4">
                                 <i class="fa-solid fa-save mr-1"></i> Actualizar Certificado
                             </button>

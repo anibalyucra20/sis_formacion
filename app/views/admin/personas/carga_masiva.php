@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                 <p class="text-muted font-size-13 mb-0">Importación rápida de cientos o miles de participantes desde una hoja de cálculo</p>
             </div>
             <div>
-                <a href="<?= BASE_URL ?>/admin/personas" class="btn btn-outline-secondary font-weight-bold" style="border-radius: 8px;">
+                <a href="<?= BASE_URL ?>/admin/personas" class="btn btn-outline-info font-weight-bold" style="border-radius: 8px;">
                     <i class="fa-solid fa-arrow-left mr-1"></i> Volver a la Lista
                 </a>
             </div>
@@ -65,12 +65,11 @@ require_once __DIR__ . '/../../layouts/header.php';
                             <li><strong>Columna C:</strong> Apellidos del participante (Obligatorio).</li>
                             <li><strong>Columna D:</strong> Correo electrónico (Opcional).</li>
                             <li><strong>Columna E:</strong> Teléfono (Opcional).</li>
-                            <li><strong>Actualización Inteligente:</strong> Si un DNI ya existe en la base de datos, sus datos serán actualizados automáticamente sin generar duplicados.</li>
                         </ul>
                     </div>
 
                     <div class="d-flex justify-content-end" style="gap: 10px;">
-                        <a href="<?= BASE_URL ?>/admin/personas" class="btn btn-outline-secondary font-weight-bold px-4">Cancelar</a>
+                        <a href="<?= BASE_URL ?>/admin/personas" class="btn btn-outline-danger font-weight-bold px-4">Cancelar</a>
                         <button type="submit" class="btn btn-primary font-weight-bold px-4">
                             <i class="fa-solid fa-upload mr-1"></i> Iniciar Importación Masiva
                         </button>
@@ -86,8 +85,8 @@ require_once __DIR__ . '/../../layouts/footer.php';
 ?>
 
 <script>
-$('#customFile').on('change', function() {
-    let fileName = $(this).val().split('\\').pop();
-    $(this).next('.custom-file-label').addClass("selected").html(fileName);
-});
+    $('#customFile').on('change', function() {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
 </script>

@@ -50,8 +50,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                                 <th>Nombres</th>
                                 <th>Correo Electrónico</th>
                                 <th>Teléfono</th>
-                                <th>Cursos Llevados</th>
-                                <th>Fecha Registro</th>
+                                <th>Cursos</th>
                                 <th class="text-center" style="width: 140px;">Acciones</th>
                             </tr>
                         </thead>
@@ -68,57 +67,60 @@ require_once __DIR__ . '/../../layouts/footer.php';
 ?>
 
 <script>
-$(document).ready(function() {
-    const table = $('#tabla-personas').DataTable({
-        processing: true,
-        serverSide: true,
-        responsive: true,
-        order: [[2, 'asc']],
-        ajax: {
-            url: '<?= BASE_URL ?>/admin/personas/data',
-            type: 'GET',
-            headers: { 'X-SIGI-DT': '1' }
-        },
-        columns: [
-            { data: 'id' },
-            { 
-                data: 'dni',
-                render: function(data) {
-                    return '<span class="badge badge-light border text-primary font-weight-bold font-size-13 px-2 py-1">' + data + '</span>';
+    $(document).ready(function() {
+        const table = $('#tabla-personas').DataTable({
+            processing: true,
+            serverSide: true,
+            responsive: true,
+            order: [
+                [2, 'asc']
+            ],
+            ajax: {
+                url: '<?= BASE_URL ?>/admin/personas/data',
+                type: 'GET',
+                headers: {
+                    'X-SIGI-DT': '1'
                 }
             },
-            { data: 'apellidos', className: 'font-weight-bold' },
-            { data: 'nombres' },
-            { 
-                data: 'email',
-                render: function(data) {
-                    return data ? '<span class="text-muted">' + data + '</span>' : '<span class="text-muted font-italic">-</span>';
-                }
-            },
-            { 
-                data: 'telefono',
-                render: function(data) {
-                    return data ? data : '<span class="text-muted">-</span>';
-                }
-            },
-            { 
-                data: 'total_cursos',
-                render: function(data) {
-                    return '<span class="badge badge-pill badge-primary px-2 font-weight-bold">' + data + ' cursos</span>';
-                }
-            },
-            { 
-                data: 'fecha_registro',
-                render: function(data) {
-                    return data ? data.substring(0, 10) : '';
-                }
-            },
-            {
-                data: null,
-                orderable: false,
-                className: 'text-center',
-                render: function(data, type, row) {
-                    return `
+            columns: [{
+                    data: 'id'
+                },
+                {
+                    data: 'dni',
+                    render: function(data) {
+                        return '<span class="font-weight-bold font-size-13 px-2 py-1">' + data + '</span>';
+                    }
+                },
+                {
+                    data: 'apellidos',
+                },
+                {
+                    data: 'nombres'
+                },
+                {
+                    data: 'email',
+                    render: function(data) {
+                        return data ? '<span class="text-muted">' + data + '</span>' : '<span class="text-muted font-italic">-</span>';
+                    }
+                },
+                {
+                    data: 'telefono',
+                    render: function(data) {
+                        return data ? data : '<span class="text-muted">-</span>';
+                    }
+                },
+                {
+                    data: 'total_cursos',
+                    render: function(data) {
+                        return '<span class="px-2 font-weight-bold">' + data + '</span>';
+                    }
+                },
+                {
+                    data: null,
+                    orderable: false,
+                    className: 'text-center',
+                    render: function(data, type, row) {
+                        return `
                         <div class="btn-group btn-group-sm" role="group">
                             <a href="<?= BASE_URL ?>/consulta?dni=${row.dni}" target="_blank" class="btn btn-outline-info" title="Ver Certificados Públicos">
                                 <i class="fa-solid fa-graduation-cap"></i>
@@ -131,45 +133,45 @@ $(document).ready(function() {
                             </button>
                         </div>
                     `;
-                }
-            }
-        ]
-    });
-
-
-    $(document).on('click', '.btn-eliminar', function() {
-        const id = $(this).data('id');
-        const nombre = $(this).data('nombre');
-
-        Swal.fire({
-            title: '¿Eliminar persona?',
-            text: `¿Desea eliminar a "${nombre}" del sistema?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '<?= BASE_URL ?>/admin/personas/eliminar/' + id,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(res) {
-                        if (res.success) {
-                            Swal.fire('¡Eliminado!', res.message, 'success');
-                            table.ajax.reload(null, false);
-                        } else {
-                            Swal.fire('Atención', res.message, 'error');
-                        }
-                    },
-                    error: function() {
-                        Swal.fire('Error', 'Ocurrió un error en la solicitud', 'error');
                     }
-                });
-            }
+                }
+            ]
+        });
+
+
+        $(document).on('click', '.btn-eliminar', function() {
+            const id = $(this).data('id');
+            const nombre = $(this).data('nombre');
+
+            Swal.fire({
+                title: '¿Eliminar persona?',
+                text: `¿Desea eliminar a "${nombre}" del sistema?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '<?= BASE_URL ?>/admin/personas/eliminar/' + id,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(res) {
+                            if (res.success) {
+                                Swal.fire('¡Eliminado!', res.message, 'success');
+                                table.ajax.reload(null, false);
+                            } else {
+                                Swal.fire('Atención', res.message, 'error');
+                            }
+                        },
+                        error: function() {
+                            Swal.fire('Error', 'Ocurrió un error en la solicitud', 'error');
+                        }
+                    });
+                }
+            });
         });
     });
-});
 </script>

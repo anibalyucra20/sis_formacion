@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                 <p class="text-muted font-size-13 mb-0">Vinculación y emisión masiva de certificados para un curso completo</p>
             </div>
             <div>
-                <a href="<?= BASE_URL ?>/admin/certificados" class="btn btn-outline-secondary font-weight-bold" style="border-radius: 8px;">
+                <a href="<?= BASE_URL ?>/admin/certificados" class="btn btn-outline-info font-weight-bold" style="border-radius: 8px;">
                     <i class="fa-solid fa-arrow-left mr-1"></i> Volver a la Lista
                 </a>
             </div>
@@ -80,7 +80,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                     </div>
 
                     <div class="d-flex justify-content-end" style="gap: 10px;">
-                        <a href="<?= BASE_URL ?>/admin/certificados" class="btn btn-outline-secondary font-weight-bold px-4">Cancelar</a>
+                        <a href="<?= BASE_URL ?>/admin/certificados" class="btn btn-outline-danger font-weight-bold px-4">Cancelar</a>
                         <button type="submit" class="btn btn-primary font-weight-bold px-4">
                             <i class="fa-solid fa-upload mr-1"></i> Importar y Emitir Certificados
                         </button>
@@ -96,8 +96,8 @@ require_once __DIR__ . '/../../layouts/footer.php';
 ?>
 
 <script>
-$('#customFile').on('change', function() {
-    let fileName = $(this).val().split('\\').pop();
-    $(this).next('.custom-file-label').addClass("selected").html(fileName);
-});
+    $('#customFile').on('change', function() {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
 </script>
