@@ -2,6 +2,9 @@
 
 namespace App\Controllers;
 
+include __DIR__ . '/../models/Admin/Certificado.php';
+include __DIR__ . '/../models/Admin/Configuracion.php';
+
 use Core\Controller;
 use App\Models\Admin\Certificado;
 use App\Models\Admin\Configuracion;
@@ -152,27 +155,27 @@ class ConsultaController extends Controller
 
         $html = '
         <div style="text-align: center; font-family: helvetica;">
-            <p style="font-size: 13px; color: #64748b; letter-spacing: 2px; margin-bottom: 2px;">'.strtoupper($cfg['institucion']).'</p>
+            <p style="font-size: 13px; color: #64748b; letter-spacing: 2px; margin-bottom: 2px;">' . strtoupper($cfg['institucion']) . '</p>
             <h1 style="font-size: 32px; color: #1e3a8a; letter-spacing: 4px; font-weight: bold; margin: 4px 0;">CERTIFICADO</h1>
-            <p style="font-size: 11px; color: #94a3b8; letter-spacing: 1px;">REGISTRO OFICIAL N°: <span style="color:#b45309; font-weight: bold;">'.$cert['codigo_certificado'].'</span></p>
+            <p style="font-size: 11px; color: #94a3b8; letter-spacing: 1px;">REGISTRO OFICIAL N°: <span style="color:#b45309; font-weight: bold;">' . $cert['codigo_certificado'] . '</span></p>
             
             <p style="font-size: 13px; color: #475569; margin-top: 15px;">Se otorga el presente reconocimiento y constancia académica a:</p>
             
             <h2 style="font-size: 26px; color: #0f172a; font-weight: bold; margin: 10px 0; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px;">
-                '.strtoupper($cert['participante']).'
+                ' . strtoupper($cert['participante']) . '
             </h2>
-            <p style="font-size: 12px; color: #64748b; margin-top: 2px;">DNI: <strong>'.$cert['dni'].'</strong></p>
+            <p style="font-size: 12px; color: #64748b; margin-top: 2px;">DNI: <strong>' . $cert['dni'] . '</strong></p>
             
             <p style="font-size: 13px; color: #334155; line-height: 1.5; margin: 15px 30px 10px 30px;">
-                Por haber aprobado satisfactoriamente en calidad de <strong>'.$cert['condicion'].'</strong> el curso de capacitación y formación profesional:
+                Por haber aprobado satisfactoriamente en calidad de <strong>' . $cert['condicion'] . '</strong> el curso de capacitación y formación profesional:
             </p>
             
             <h3 style="font-size: 20px; color: #1e3a8a; font-weight: bold; margin: 8px 20px;">
-                "'.$cert['curso_nombre'].'"
+                "' . $cert['curso_nombre'] . '"
             </h3>
             
             <p style="font-size: 12px; color: #475569; margin: 5px 0 20px 0;">
-                Con una duración acreditada de <strong>'.$cert['horas'].' horas académicas</strong> | Modalidad: <strong>'.$cert['curso_modalidad'].'</strong> | Calificación: <strong>'.$cert['nota'].'</strong>
+                Con una duración acreditada de <strong>' . $cert['horas'] . ' horas académicas</strong> | Modalidad: <strong>' . $cert['curso_modalidad'] . '</strong> | Calificación: <strong>' . $cert['nota'] . '</strong>
             </p>
             
             <table style="width: 100%; margin-top: 25px;">
@@ -180,28 +183,28 @@ class ConsultaController extends Controller
                     <td style="width: 33%; text-align: center;">
                         <br><br>
                         <div style="border-top: 1px solid #94a3b8; width: 80%; margin: 0 auto; padding-top: 5px;">
-                            <strong style="font-size: 11px; color: #1e293b;">'.($cert['curso_instructor'] ?: 'Instructor Principal').'</strong><br>
+                            <strong style="font-size: 11px; color: #1e293b;">' . ($cert['curso_instructor'] ?: 'Instructor Principal') . '</strong><br>
                             <span style="font-size: 9px; color: #64748b;">Ponente / Instructor</span>
                         </div>
                     </td>
                     <td style="width: 34%; text-align: center; vertical-align: middle;">
                         <span style="font-size: 10px; color: #64748b;">
                             Fecha de Emisión:<br>
-                            <strong style="font-size: 12px; color: #1e3a8a;">'.$fechaEmisionFormateada.'</strong>
+                            <strong style="font-size: 12px; color: #1e3a8a;">' . $fechaEmisionFormateada . '</strong>
                         </span>
                     </td>
                     <td style="width: 33%; text-align: center;">
                         <br><br>
                         <div style="border-top: 1px solid #94a3b8; width: 80%; margin: 0 auto; padding-top: 5px;">
-                            <strong style="font-size: 11px; color: #1e293b;">'.$cfg['nombre_firma'].'</strong><br>
-                            <span style="font-size: 9px; color: #64748b;">'.$cfg['cargo_firma'].'</span>
+                            <strong style="font-size: 11px; color: #1e293b;">' . $cfg['nombre_firma'] . '</strong><br>
+                            <span style="font-size: 9px; color: #64748b;">' . $cfg['cargo_firma'] . '</span>
                         </div>
                     </td>
                 </tr>
             </table>
             
             <p style="font-size: 8px; color: #94a3b8; margin-top: 18px;">
-                Verifique la autenticidad de este documento ingresando a: '.BASE_URL.'/verificar/'.$cert['codigo_certificado'].'
+                Verifique la autenticidad de este documento ingresando a: ' . BASE_URL . '/verificar/' . $cert['codigo_certificado'] . '
             </p>
         </div>';
 
