@@ -13,13 +13,11 @@ class Certificado extends Model
     {
         $columnas = [
             0 => 'cert.id',
-            1 => 'cert.codigo_certificado',
-            2 => 'p.dni',
-            3 => 'participante',
-            4 => 'c.nombre',
-            5 => 'cert.horas',
-            6 => 'cert.condicion',
-            7 => 'cert.fecha_emision'
+            1 => 'p.dni',
+            2 => 'participante',
+            3 => 'c.nombre',
+            4 => 'c.horas_academicas',
+            5 => 'cert.fecha_emision'
         ];
 
         $ordenarPor = $columnas[$orderCol] ?? 'cert.id';
@@ -29,7 +27,7 @@ class Certificado extends Model
         $params = [];
 
         if (!empty($search)) {
-            $where[] = "(cert.codigo_certificado LIKE :search OR p.dni LIKE :search OR p.nombres LIKE :search OR p.apellidos LIKE :search OR c.nombre LIKE :search)";
+            $where[] = "(p.dni LIKE :search OR p.nombres LIKE :search OR p.apellidos LIKE :search OR c.nombre LIKE :search)";
             $params[':search'] = '%' . $search . '%';
         }
 
@@ -46,6 +44,7 @@ class Certificado extends Model
         $sqlWhere = !empty($where) ? ("WHERE " . implode(" AND ", $where)) : "";
 
         $sql = "SELECT cert.*, 
+                       c.horas_academicas AS horas,
                        p.dni, p.nombres, p.apellidos, CONCAT(p.apellidos, ', ', p.nombres) AS participante,
                        p.email AS persona_email, p.telefono AS persona_telefono,
                        c.codigo AS curso_codigo, c.nombre AS curso_nombre, c.instructor AS curso_instructor, c.modalidad AS curso_modalidad
@@ -92,6 +91,7 @@ class Certificado extends Model
     {
         $db = self::getDB();
         $sql = "SELECT cert.*, 
+                       c.horas_academicas AS horas,
                        p.dni, p.nombres, p.apellidos, CONCAT(p.apellidos, ', ', p.nombres) AS participante,
                        p.email AS persona_email, p.telefono AS persona_telefono,
                        c.codigo AS curso_codigo, c.nombre AS curso_nombre, c.descripcion AS curso_descripcion,
@@ -108,24 +108,15 @@ class Certificado extends Model
 
     public function findByCodigo($codigo)
     {
-        $db = self::getDB();
-        $sql = "SELECT cert.*, 
-                       p.dni, p.nombres, p.apellidos, CONCAT(p.apellidos, ', ', p.nombres) AS participante,
-                       p.email AS persona_email, p.telefono AS persona_telefono,
-                       c.codigo AS curso_codigo, c.nombre AS curso_nombre, c.descripcion AS curso_descripcion,
-                       c.horas_academicas AS curso_horas, c.fecha_inicio AS curso_inicio, c.fecha_fin AS curso_fin,
-                       c.instructor AS curso_instructor, c.modalidad AS curso_modalidad
-                FROM {$this->table} cert
-                INNER JOIN personas p ON p.id = cert.persona_id
-                INNER JOIN cursos c ON c.id = cert.curso_id
-                WHERE UPPER(TRIM(cert.codigo_certificado)) = UPPER(TRIM(?)) LIMIT 1";
-        $stmt = $db->prepare($sql);
-        $stmt->execute([trim($codigo)]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        // Si se pasa un ID numérico, buscar por id
+        if (is_numeric($codigo)) {
+            return $this->find((int)$codigo);
+        }
+        return null;
     }
 
     /**
-     * Consulta pública por DNI: retorna los datos de la persona y todos sus certificados
+     * Consulta pública por DNI: retorna los datos de la persona y todos sus cursos/certificados
      */
     public function buscarPorDni($dni)
     {
@@ -141,8 +132,9 @@ class Certificado extends Model
             return null;
         }
 
-        // 2. Obtener todos los certificados emitidos a esta persona
+        // 2. Obtener todos los certificados emitidos a esta persona (horas tomadas del curso)
         $sqlCert = "SELECT cert.*, 
+                           c.horas_academicas AS horas,
                            c.codigo AS curso_codigo, c.nombre AS curso_nombre, c.descripcion AS curso_descripcion,
                            c.horas_academicas AS curso_horas, c.fecha_inicio AS curso_inicio, c.fecha_fin AS curso_fin,
                            c.instructor AS curso_instructor, c.modalidad AS curso_modalidad, c.estado AS curso_estado
@@ -156,7 +148,7 @@ class Certificado extends Model
 
         $totalHoras = 0;
         foreach ($cursos as $c) {
-            $totalHoras += (int)$c['horas'];
+            $totalHoras += (int)($c['horas'] ?? $c['curso_horas'] ?? 0);
         }
 
         return [
@@ -165,35 +157,6 @@ class Certificado extends Model
             'total_cursos' => count($cursos),
             'total_horas'  => $totalHoras
         ];
-    }
-
-    /**
-     * Generar siguiente código correlativo de certificado (ej: CERT-2026-00001)
-     */
-    public function generarSiguienteCodigo($anio = null)
-    {
-        $db = self::getDB();
-        if (!$anio) {
-            $anio = date('Y');
-        }
-
-        $prefix = "CERT-{$anio}-";
-        $sql = "SELECT codigo_certificado FROM {$this->table} 
-                WHERE codigo_certificado LIKE :prefix 
-                ORDER BY id DESC LIMIT 1";
-        $stmt = $db->prepare($sql);
-        $stmt->execute([':prefix' => $prefix . '%']);
-        $ultimo = $stmt->fetchColumn();
-
-        if ($ultimo) {
-            $partes = explode('-', $ultimo);
-            $numero = (int)end($partes);
-            $siguiente = $numero + 1;
-        } else {
-            $siguiente = 1;
-        }
-
-        return sprintf("CERT-%s-%05d", $anio, $siguiente);
     }
 
     public function findByCursoPersona($curso_id, $persona_id, $exceptId = null)
@@ -214,8 +177,6 @@ class Certificado extends Model
         $db = self::getDB();
         $curso_id = (int)$data['curso_id'];
         $persona_id = (int)$data['persona_id'];
-        $codigo = strtoupper(trim($data['codigo_certificado']));
-        $horas = (int)($data['horas'] ?? 40);
         $nota = !empty($data['nota']) ? trim($data['nota']) : null;
         $condicion = $data['condicion'] ?? 'Aprobado';
         $fecha_emision = !empty($data['fecha_emision']) ? $data['fecha_emision'] : date('Y-m-d');
@@ -226,8 +187,6 @@ class Certificado extends Model
             $sql = "UPDATE {$this->table} SET 
                         curso_id = :curso_id,
                         persona_id = :persona_id,
-                        codigo_certificado = :codigo,
-                        horas = :horas,
                         nota = :nota,
                         condicion = :condicion,
                         fecha_emision = :fecha,
@@ -237,8 +196,6 @@ class Certificado extends Model
             $stmt->execute([
                 ':curso_id'   => $curso_id,
                 ':persona_id' => $persona_id,
-                ':codigo'     => $codigo,
-                ':horas'      => $horas,
                 ':nota'       => $nota,
                 ':condicion'  => $condicion,
                 ':fecha'      => $fecha_emision,
@@ -248,15 +205,13 @@ class Certificado extends Model
             return $id;
         } else {
             $sql = "INSERT INTO {$this->table} 
-                        (curso_id, persona_id, codigo_certificado, horas, nota, condicion, fecha_emision, observaciones)
+                        (curso_id, persona_id, nota, condicion, fecha_emision, observaciones)
                     VALUES 
-                        (:curso_id, :persona_id, :codigo, :horas, :nota, :condicion, :fecha, :obs)";
+                        (:curso_id, :persona_id, :nota, :condicion, :fecha, :obs)";
             $stmt = $db->prepare($sql);
             $stmt->execute([
                 ':curso_id'   => $curso_id,
                 ':persona_id' => $persona_id,
-                ':codigo'     => $codigo,
-                ':horas'      => $horas,
                 ':nota'       => $nota,
                 ':condicion'  => $condicion,
                 ':fecha'      => $fecha_emision,
@@ -282,7 +237,7 @@ class Certificado extends Model
     public function sumHorasTotal()
     {
         $db = self::getDB();
-        return (int)$db->query("SELECT COALESCE(SUM(horas), 0) FROM {$this->table}")->fetchColumn();
+        return (int)$db->query("SELECT COALESCE(SUM(c.horas_academicas), 0) FROM {$this->table} cert INNER JOIN cursos c ON c.id = cert.curso_id")->fetchColumn();
     }
 
     /**
@@ -292,6 +247,7 @@ class Certificado extends Model
     {
         $db = self::getDB();
         $sql = "SELECT cert.*, 
+                       c.horas_academicas AS horas,
                        p.dni, p.nombres, p.apellidos, CONCAT(p.apellidos, ', ', p.nombres) AS participante,
                        p.email, p.telefono,
                        c.codigo AS curso_codigo, c.nombre AS curso_nombre, c.instructor, c.horas_academicas
@@ -332,6 +288,7 @@ class Certificado extends Model
         $sqlWhere = !empty($where) ? ("WHERE " . implode(" AND ", $where)) : "";
 
         $sql = "SELECT cert.*, 
+                       c.horas_academicas AS horas,
                        p.dni, p.nombres, p.apellidos, CONCAT(p.apellidos, ', ', p.nombres) AS participante,
                        c.codigo AS curso_codigo, c.nombre AS curso_nombre
                 FROM {$this->table} cert
@@ -351,13 +308,12 @@ class Certificado extends Model
     {
         $columnas = [
             0 => 'cert.id',
-            1 => 'cert.codigo_certificado',
-            2 => 'p.dni',
-            3 => 'participante',
-            4 => 'c.nombre',
-            5 => 'cert.horas',
-            6 => 'cert.condicion',
-            7 => 'cert.fecha_emision'
+            1 => 'p.dni',
+            2 => 'participante',
+            3 => 'c.nombre',
+            4 => 'c.horas_academicas',
+            5 => 'cert.condicion',
+            6 => 'cert.fecha_emision'
         ];
 
         $ordenarPor = $columnas[$orderCol] ?? 'cert.id';
@@ -367,7 +323,7 @@ class Certificado extends Model
         $params = [];
 
         if (!empty($search)) {
-            $where[] = "(cert.codigo_certificado LIKE :search OR p.dni LIKE :search OR p.nombres LIKE :search OR p.apellidos LIKE :search OR c.nombre LIKE :search)";
+            $where[] = "(p.dni LIKE :search OR p.nombres LIKE :search OR p.apellidos LIKE :search OR c.nombre LIKE :search)";
             $params[':search'] = '%' . $search . '%';
         }
 
@@ -394,6 +350,7 @@ class Certificado extends Model
         $sqlWhere = !empty($where) ? ("WHERE " . implode(" AND ", $where)) : "";
 
         $sql = "SELECT cert.*, 
+                       c.horas_academicas AS horas,
                        p.dni, p.nombres, p.apellidos, CONCAT(p.apellidos, ', ', p.nombres) AS participante,
                        c.codigo AS curso_codigo, c.nombre AS curso_nombre
                 FROM {$this->table} cert
@@ -440,7 +397,6 @@ class Certificado extends Model
      */
     public function getReporteCompleto($curso_id = null, $desde = null, $hasta = null, $dni = null)
     {
-        $db = self::getDB();
         $where = [];
         $params = [];
 
@@ -467,6 +423,7 @@ class Certificado extends Model
         $sqlWhere = !empty($where) ? ("WHERE " . implode(" AND ", $where)) : "";
 
         $sql = "SELECT cert.*, 
+                       c.horas_academicas AS horas,
                        p.dni, p.nombres, p.apellidos, CONCAT(p.apellidos, ', ', p.nombres) AS participante,
                        c.codigo AS curso_codigo, c.nombre AS curso_nombre
                 FROM {$this->table} cert
@@ -475,6 +432,7 @@ class Certificado extends Model
                 {$sqlWhere}
                 ORDER BY cert.fecha_emision DESC, cert.id DESC";
 
+        $db = self::getDB();
         $stmt = $db->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

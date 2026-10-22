@@ -105,16 +105,16 @@ class ReportesController extends Controller
 
         // Título principal
         $sheet->setCellValue('A1', 'REPORTE GENERAL DE CERTIFICADOS EMITIDOS');
-        $sheet->mergeCells('A1:H1');
+        $sheet->mergeCells('A1:G1');
         $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(14)->getColor()->setARGB('FF1E3A8A');
 
         $sheet->setCellValue('A2', $subtitulo . ' | Generado el: ' . date('d/m/Y H:i:s'));
-        $sheet->mergeCells('A2:H2');
+        $sheet->mergeCells('A2:G2');
         $sheet->getStyle('A2')->getFont()->setSize(10)->getColor()->setARGB('FF64748B');
 
         // Encabezados
-        $headers = ['#', 'COD. CERTIFICADO', 'DNI', 'PARTICIPANTE', 'CURSO / CAPACITACIÓN', 'HORAS', 'CONDICIÓN', 'FECHA EMISIÓN'];
-        $cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+        $headers = ['#', 'DNI', 'PARTICIPANTE', 'CURSO / CAPACITACIÓN', 'HORAS', 'CONDICIÓN', 'FECHA EMISIÓN'];
+        $cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 
         $rowNum = 4;
         foreach ($headers as $idx => $h) {
@@ -129,18 +129,17 @@ class ReportesController extends Controller
         $num = 1;
         foreach ($datos as $d) {
             $sheet->setCellValue("A{$rowNum}", $num++);
-            $sheet->setCellValueExplicit("B{$rowNum}", $d['codigo_certificado'], \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
-            $sheet->setCellValueExplicit("C{$rowNum}", $d['dni'], \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
-            $sheet->setCellValue("D{$rowNum}", $d['participante']);
-            $sheet->setCellValue("E{$rowNum}", $d['curso_nombre']);
-            $sheet->setCellValue("F{$rowNum}", ($d['horas'] ?? 40) . ' h');
-            $sheet->setCellValue("G{$rowNum}", $d['condicion'] ?? 'Aprobado');
-            $sheet->setCellValue("H{$rowNum}", date('d/m/Y', strtotime($d['fecha_emision'])));
+            $sheet->setCellValueExplicit("B{$rowNum}", $d['dni'], \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+            $sheet->setCellValue("C{$rowNum}", $d['participante']);
+            $sheet->setCellValue("D{$rowNum}", $d['curso_nombre']);
+            $sheet->setCellValue("E{$rowNum}", ($d['horas'] ?? 40) . ' h');
+            $sheet->setCellValue("F{$rowNum}", $d['condicion'] ?? 'Aprobado');
+            $sheet->setCellValue("G{$rowNum}", date('d/m/Y', strtotime($d['fecha_emision'])));
             $rowNum++;
         }
 
         if ($rowNum > 5) {
-            $sheet->getStyle("A4:H" . ($rowNum - 1))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+            $sheet->getStyle("A4:G" . ($rowNum - 1))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
         }
 
         $filename = "Reporte_Certificados_" . date('Ymd_His') . ".xlsx";

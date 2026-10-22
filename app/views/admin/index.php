@@ -119,7 +119,7 @@ require_once __DIR__ . '/../layouts/header.php';
                     <table class="table table-hover align-middle mb-0">
                         <thead class="bg-light">
                             <tr>
-                                <th>Código</th>
+                                <th>#</th>
                                 <th>Participante</th>
                                 <th>Curso</th>
                                 <th>Horas</th>
@@ -133,7 +133,7 @@ require_once __DIR__ . '/../layouts/header.php';
                                     <tr>
                                         <td>
                                             <span class="badge badge-light border text-dark font-weight-bold font-size-12">
-                                                <?= htmlspecialchars($uc['codigo_certificado']) ?>
+                                                #<?= $uc['id'] ?>
                                             </span>
                                         </td>
                                         <td>
@@ -152,11 +152,8 @@ require_once __DIR__ . '/../layouts/header.php';
                                             <?= date('d/m/Y', strtotime($uc['fecha_emision'])) ?>
                                         </td>
                                         <td class="text-right">
-                                            <a href="<?= BASE_URL ?>/consulta/pdf/<?= urlencode($uc['codigo_certificado']) ?>" target="_blank" class="btn btn-sm btn-outline-danger py-1 px-2" title="Descargar PDF">
-                                                <i class="fa-solid fa-file-pdf"></i>
-                                            </a>
-                                            <a href="<?= BASE_URL ?>/verificar/<?= urlencode($uc['codigo_certificado']) ?>" target="_blank" class="btn btn-sm btn-outline-primary py-1 px-2" title="Verificar digital">
-                                                <i class="fa-solid fa-shield-halved"></i>
+                                            <a href="<?= BASE_URL ?>/admin/certificados/editar/<?= $uc['id'] ?>" class="btn btn-sm btn-outline-primary py-1 px-2" title="Editar Certificado">
+                                                <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
                                         </td>
                                     </tr>

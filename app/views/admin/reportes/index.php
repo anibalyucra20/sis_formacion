@@ -87,14 +87,12 @@ require_once __DIR__ . '/../../layouts/header.php';
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Cód. Certificado</th>
                                 <th>DNI</th>
                                 <th>Participante</th>
                                 <th>Curso / Capacitación</th>
                                 <th>Horas</th>
                                 <th>Condición</th>
                                 <th>Fecha Emisión</th>
-                                <th class="text-center" style="width: 100px;">Certificado</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -158,9 +156,6 @@ require_once __DIR__ . '/../../layouts/footer.php';
                     data: 'id'
                 },
                 {
-                    data: 'codigo_certificado',
-                },
-                {
                     data: 'dni',
                 },
                 {
@@ -188,23 +183,6 @@ require_once __DIR__ . '/../../layouts/footer.php';
                     data: 'fecha_emision',
                     render: function(data) {
                         return data ? data.substring(0, 10) : '';
-                    }
-                },
-                {
-                    data: null,
-                    orderable: false,
-                    className: 'text-center',
-                    render: function(data, type, row) {
-                        return `
-                        <div class="btn-group btn-group-sm" role="group">
-                            <a href="<?= BASE_URL ?>/consulta/pdf/${encodeURIComponent(row.codigo_certificado)}" target="_blank" class="btn btn-outline-info" title="Descargar PDF" data-no-loader="true">
-                                <i class="fa-solid fa-file-pdf"></i>
-                            </a>
-                            <a href="<?= BASE_URL ?>/verificar/${encodeURIComponent(row.codigo_certificado)}" target="_blank" class="btn btn-outline-success" title="Verificar Digital" data-no-loader="true">
-                                <i class="fa-solid fa-shield-halved"></i>
-                            </a>
-                        </div>
-                    `;
                     }
                 }
             ]

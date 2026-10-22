@@ -73,8 +73,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                         <h6 class="font-weight-bold font-size-13 text-dark mb-2"><i class="fa-solid fa-circle-question mr-1 text-info"></i> Comportamiento de la Importación:</h6>
                         <ul class="font-size-12 text-muted mb-0 pl-3">
                             <li><strong>Registro automático de personas:</strong> Si el DNI de la persona no existe en el sistema, se registrará automáticamente con los nombres y apellidos indicados.</li>
-                            <li><strong>Código correlativo:</strong> Si deja la columna de código vacía, el sistema generará correlativos oficiales automáticos (ej: CERT-<?= date('Y') ?>-0000X).</li>
-                            <li><strong>Horas:</strong> Si se deja vacía la columna horas, se aplicarán las horas académicas configuradas en el curso.</li>
+                            <li><strong>Horas lectivas:</strong> Las horas de la certificación se toman automáticamente de las horas académicas configuradas en el curso.</li>
                             <li><strong>Protección contra duplicados:</strong> Si un participante ya cuenta con certificado emitido para este curso, será omitido para evitar duplicidad.</li>
                         </ul>
                     </div>

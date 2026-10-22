@@ -108,7 +108,7 @@
                     <h3 class="font-weight-bold mb-1" style="font-size: 24px;">DOCUMENTO OFICIAL VÁLIDO</h3>
                     <p class="mb-0 opacity-90 font-size-14">Este certificado se encuentra debidamente registrado en el sistema institucional</p>
                     <div class="mt-2 font-weight-bold font-size-15" style="letter-spacing: 1px;">
-                        CÓDIGO: <?= htmlspecialchars($certificado['codigo_certificado']) ?>
+                        REGISTRO: #<?= htmlspecialchars($certificado['id'] ?? '') ?>
                     </div>
                 </div>
 

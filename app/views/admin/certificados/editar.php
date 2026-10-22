@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../layouts/header.php';
         <div class="page-title-box d-flex align-items-center justify-content-between pb-3">
             <div>
                 <h4 class="mb-1 font-weight-bold" style="color: #1e293b;">Editar Certificado</h4>
-                <p class="text-muted font-size-13 mb-0">Certificado código: <strong><?= htmlspecialchars($certificado['codigo_certificado']) ?></strong></p>
+                <p class="text-muted font-size-13 mb-0">Participante: <strong><?= htmlspecialchars($certificado['participante'] ?? '') ?></strong> | DNI: <strong><?= htmlspecialchars($certificado['dni'] ?? '') ?></strong></p>
             </div>
             <div>
                 <a href="<?= BASE_URL ?>/admin/certificados" class="btn btn-outline-info font-weight-bold" style="border-radius: 8px;">
@@ -37,7 +37,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                             <select name="curso_id" id="curso_id" class="form-control" required>
                                 <?php foreach ($cursos as $c): ?>
                                     <option value="<?= $c['id'] ?>" <?= ($certificado['curso_id'] == $c['id']) ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($c['codigo'] . ' - ' . $c['nombre']) ?>
+                                        <?= htmlspecialchars($c['codigo'] . ' - ' . $c['nombre']) ?> (<?= $c['horas_academicas'] ?>h)
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -57,28 +57,14 @@ require_once __DIR__ . '/../../layouts/header.php';
                     </div>
 
                     <div class="row">
-                        <!-- Código de Certificado -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label font-weight-bold font-size-13">Código de Certificado <span class="text-danger">*</span></label>
-                            <input type="text" name="codigo_certificado" class="form-control font-weight-bold" value="<?= htmlspecialchars($certificado['codigo_certificado']) ?>" required style="text-transform: uppercase;">
-                        </div>
-
-                        <!-- Horas Lectivas -->
-                        <div class="col-md-3 mb-3">
-                            <label class="form-label font-weight-bold font-size-13">Horas Acreditadas <span class="text-danger">*</span></label>
-                            <input type="number" name="horas" class="form-control" value="<?= $certificado['horas'] ?>" min="1" required>
-                        </div>
-
                         <!-- Calificación -->
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label class="form-label font-weight-bold font-size-13">Calificación / Nota</label>
-                            <input type="text" name="nota" class="form-control" value="<?= htmlspecialchars($certificado['nota'] ?? '') ?>">
+                            <input type="text" name="nota" class="form-control" value="<?= htmlspecialchars($certificado['nota'] ?? '') ?>" placeholder="Ej: 18 o Aprobado">
                         </div>
-                    </div>
 
-                    <div class="row">
                         <!-- Condición -->
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label class="form-label font-weight-bold font-size-13">Condición del Participante <span class="text-danger">*</span></label>
                             <select name="condicion" class="form-control" required>
                                 <option value="Aprobado" <?= $certificado['condicion'] === 'Aprobado' ? 'selected' : '' ?>>Aprobado</option>
@@ -89,7 +75,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                         </div>
 
                         <!-- Fecha de Emisión -->
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label class="form-label font-weight-bold font-size-13">Fecha de Emisión <span class="text-danger">*</span></label>
                             <input type="date" name="fecha_emision" class="form-control" value="<?= $certificado['fecha_emision'] ?>" required>
                         </div>
@@ -100,21 +86,11 @@ require_once __DIR__ . '/../../layouts/header.php';
                         <textarea name="observaciones" rows="3" class="form-control"><?= htmlspecialchars($certificado['observaciones'] ?? '') ?></textarea>
                     </div>
 
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div style="gap: 8px;" class="d-flex">
-                            <a href="<?= BASE_URL ?>/consulta/pdf/<?= urlencode($certificado['codigo_certificado']) ?>" target="_blank" class="btn btn-outline-info btn-sm font-weight-bold">
-                                <i class="fa-solid fa-file-pdf mr-1"></i> Ver PDF Oficial
-                            </a>
-                            <a href="<?= BASE_URL ?>/verificar/<?= urlencode($certificado['codigo_certificado']) ?>" target="_blank" class="btn btn-outline-success btn-sm font-weight-bold">
-                                <i class="fa-solid fa-shield-halved mr-1"></i> Ver Verificación
-                            </a>
-                        </div>
-                        <div style="gap: 10px;" class="d-flex">
-                            <a href="<?= BASE_URL ?>/admin/certificados" class="btn btn-outline-danger font-weight-bold px-4">Cancelar</a>
-                            <button type="submit" class="btn btn-primary font-weight-bold px-4">
-                                <i class="fa-solid fa-save mr-1"></i> Actualizar Certificado
-                            </button>
-                        </div>
+                    <div class="d-flex justify-content-end" style="gap: 10px;">
+                        <a href="<?= BASE_URL ?>/admin/certificados" class="btn btn-outline-secondary font-weight-bold px-4">Cancelar</a>
+                        <button type="submit" class="btn btn-primary font-weight-bold px-4">
+                            <i class="fa-solid fa-save mr-1"></i> Actualizar Certificado
+                        </button>
                     </div>
                 </form>
             </div>

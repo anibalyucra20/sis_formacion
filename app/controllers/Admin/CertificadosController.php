@@ -79,14 +79,11 @@ class CertificadosController extends Controller
         $cursoSeleccionado = isset($_GET['curso_id']) ? (int)$_GET['curso_id'] : null;
         $personaSeleccionada = isset($_GET['persona_id']) ? (int)$_GET['persona_id'] : null;
 
-        $siguienteCodigo = $this->model->generarSiguienteCodigo();
-
         $this->view('admin/certificados/nuevo', [
             'cursos'              => $cursos,
             'personas'            => $personas,
             'cursoSeleccionado'   => $cursoSeleccionado,
             'personaSeleccionada' => $personaSeleccionada,
-            'siguienteCodigo'     => $siguienteCodigo,
             'pageTitle'           => 'Emitir Certificado / Vincular a Curso',
             'isAdmin'             => true,
             'module'              => 'admin'
@@ -114,7 +111,7 @@ class CertificadosController extends Controller
             'certificado' => $certificado,
             'cursos'      => $cursos,
             'personas'    => $personas,
-            'pageTitle'   => 'Editar Certificado: ' . htmlspecialchars($certificado['codigo_certificado']),
+            'pageTitle'   => 'Editar Certificado: ' . htmlspecialchars($certificado['participante'] ?? 'Registro'),
             'isAdmin'     => true,
             'module'      => 'admin'
         ]);
@@ -127,18 +124,16 @@ class CertificadosController extends Controller
             exit;
         }
 
-        $id        = !empty($_POST['id']) ? (int)$_POST['id'] : null;
-        $curso_id  = !empty($_POST['curso_id']) ? (int)$_POST['curso_id'] : null;
+        $id         = !empty($_POST['id']) ? (int)$_POST['id'] : null;
+        $curso_id   = !empty($_POST['curso_id']) ? (int)$_POST['curso_id'] : null;
         $persona_id = !empty($_POST['persona_id']) ? (int)$_POST['persona_id'] : null;
-        $codigo    = strtoupper(trim($_POST['codigo_certificado'] ?? ''));
-        $horas     = (int)($_POST['horas'] ?? 40);
-        $nota      = trim($_POST['nota'] ?? '');
-        $condicion = $_POST['condicion'] ?? 'Aprobado';
-        $fecha     = !empty($_POST['fecha_emision']) ? $_POST['fecha_emision'] : date('Y-m-d');
-        $obs       = trim($_POST['observaciones'] ?? '');
+        $nota       = trim($_POST['nota'] ?? '');
+        $condicion  = $_POST['condicion'] ?? 'Aprobado';
+        $fecha      = !empty($_POST['fecha_emision']) ? $_POST['fecha_emision'] : date('Y-m-d');
+        $obs        = trim($_POST['observaciones'] ?? '');
 
-        if (!$curso_id || !$persona_id || empty($codigo)) {
-            $_SESSION['flash_error'] = 'Seleccione el curso, la persona e ingrese el código de certificado.';
+        if (!$curso_id || !$persona_id) {
+            $_SESSION['flash_error'] = 'Seleccione el curso y la persona participante.';
             header('Location: ' . ($id ? BASE_URL . '/admin/certificados/editar/' . $id : BASE_URL . '/admin/certificados/nuevo'));
             exit;
         }
@@ -151,24 +146,14 @@ class CertificadosController extends Controller
             exit;
         }
 
-        // Validar código duplicado
-        $existente = $this->model->findByCodigo($codigo);
-        if ($existente && (!$id || (int)$existente['id'] !== $id)) {
-            $_SESSION['flash_error'] = "El código de certificado '{$codigo}' ya ha sido emitido a otro participante.";
-            header('Location: ' . ($id ? BASE_URL . '/admin/certificados/editar/' . $id : BASE_URL . '/admin/certificados/nuevo'));
-            exit;
-        }
-
         $this->model->guardar([
-            'id'                 => $id,
-            'curso_id'           => $curso_id,
-            'persona_id'         => $persona_id,
-            'codigo_certificado' => $codigo,
-            'horas'              => $horas,
-            'nota'               => $nota,
-            'condicion'          => $condicion,
-            'fecha_emision'      => $fecha,
-            'observaciones'      => $obs
+            'id'            => $id,
+            'curso_id'      => $curso_id,
+            'persona_id'    => $persona_id,
+            'nota'          => $nota,
+            'condicion'     => $condicion,
+            'fecha_emision' => $fecha,
+            'observaciones' => $obs
         ]);
 
         $_SESSION['flash_success'] = $id ? 'Certificado actualizado correctamente.' : 'Certificado emitido con éxito.';
@@ -249,28 +234,24 @@ class CertificadosController extends Controller
                     continue;
                 }
 
-                // Columnas:
+                // Columnas admitidas:
                 // A: DNI
                 // B: Nombres
                 // C: Apellidos
                 // D: Correo (opcional)
                 // E: Telefono (opcional)
-                // F: Codigo Certificado (opcional - si viene vacío se autogenera)
-                // G: Horas (opcional - si viene vacío usa las horas del curso)
-                // H: Nota (opcional)
-                // I: Condicion (Aprobado, Participante, Ponente, etc.)
-                // J: Fecha Emision (YYYY-MM-DD o DD/MM/YYYY)
+                // F: Nota (opcional)
+                // G: Condicion (opcional)
+                // H: Fecha Emision (YYYY-MM-DD o DD/MM/YYYY)
 
                 $dni       = trim((string)($row['A'] ?? ''));
                 $nombres   = trim((string)($row['B'] ?? ''));
                 $apellidos = trim((string)($row['C'] ?? ''));
                 $email     = trim((string)($row['D'] ?? ''));
                 $telefono  = trim((string)($row['E'] ?? ''));
-                $codigo    = strtoupper(trim((string)($row['F'] ?? '')));
-                $horas     = !empty($row['G']) ? (int)$row['G'] : (int)$curso['horas_academicas'];
-                $nota      = trim((string)($row['H'] ?? '18'));
-                $condicion = !empty($row['I']) ? trim((string)$row['I']) : 'Aprobado';
-                $fechaRaw  = trim((string)($row['J'] ?? ''));
+                $nota      = trim((string)($row['F'] ?? '18'));
+                $condicion = !empty($row['G']) ? trim((string)$row['G']) : 'Aprobado';
+                $fechaRaw  = trim((string)($row['H'] ?? ''));
 
                 if (empty($dni) && empty($nombres) && empty($apellidos)) {
                     continue; // fila vacía
@@ -320,24 +301,13 @@ class CertificadosController extends Controller
                 // 2. Verificar si ya tiene certificado en este curso
                 $yaExiste = $this->model->findByCursoPersona($curso_id, $personaId);
                 if ($yaExiste) {
-                    $errores[] = "Fila {$filaIndex}: La persona con DNI {$dni} ya tiene un certificado emitido en este curso (Cód: {$yaExiste['codigo_certificado']}).";
+                    $errores[] = "Fila {$filaIndex}: La persona con DNI {$dni} ya tiene un certificado emitido en este curso.";
                     $omitidos++;
                     $filaIndex++;
                     continue;
                 }
 
-                // 3. Generar código si no vino
-                if (empty($codigo)) {
-                    $codigo = $this->model->generarSiguienteCodigo();
-                } else {
-                    // Validar código duplicado
-                    $chkCodigo = $this->model->findByCodigo($codigo);
-                    if ($chkCodigo) {
-                        $codigo = $this->model->generarSiguienteCodigo();
-                    }
-                }
-
-                // 4. Formatear fecha
+                // 3. Formatear fecha
                 $fechaEmision = date('Y-m-d');
                 if (!empty($fechaRaw)) {
                     $timestamp = strtotime(str_replace('/', '-', $fechaRaw));
@@ -346,16 +316,14 @@ class CertificadosController extends Controller
                     }
                 }
 
-                // 5. Insertar certificado
+                // 4. Insertar certificado (las horas se toman automáticamente del curso)
                 $this->model->guardar([
-                    'curso_id'           => $curso_id,
-                    'persona_id'         => $personaId,
-                    'codigo_certificado' => $codigo,
-                    'horas'              => $horas,
-                    'nota'               => $nota,
-                    'condicion'          => $condicion,
-                    'fecha_emision'      => $fechaEmision,
-                    'observaciones'      => 'Carga masiva Excel'
+                    'curso_id'      => $curso_id,
+                    'persona_id'    => $personaId,
+                    'nota'          => $nota,
+                    'condicion'     => $condicion,
+                    'fecha_emision' => $fechaEmision,
+                    'observaciones' => 'Carga masiva Excel'
                 ]);
 
                 $insertados++;
@@ -396,13 +364,11 @@ class CertificadosController extends Controller
             'APELLIDOS',
             'CORREO',
             'TELEFONO',
-            'CODIGO_CERTIFICADO_OPCIONAL',
-            'HORAS',
             'NOTA',
             'CONDICION',
             'FECHA_EMISION'
         ];
-        $cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+        $cols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
         foreach ($headers as $idx => $header) {
             $col = $cols[$idx];
@@ -415,9 +381,9 @@ class CertificadosController extends Controller
         // Ejemplos
         $hoy = date('Y-m-d');
         $ejemplos = [
-            ['71234567', 'Juan Carlos', 'Pérez Salazar', 'juan.perez@gmail.com', '981234567', '', '40', '19', 'Aprobado', $hoy],
-            ['45892134', 'María Elena', 'Gómez Torres', 'maria.gomez@hotmail.com', '982345678', '', '40', '18', 'Aprobado', $hoy],
-            ['74561230', 'Ana Lucía', 'Fernández Quispe', 'ana.fernandez@gmail.com', '984567890', '', '40', '20', 'Aprobado', $hoy]
+            ['71234567', 'Juan Carlos', 'Pérez Salazar', 'juan.perez@gmail.com', '981234567', '19', 'Aprobado', $hoy],
+            ['45892134', 'María Elena', 'Gómez Torres', 'maria.gomez@hotmail.com', '982345678', '18', 'Aprobado', $hoy],
+            ['74561230', 'Ana Lucía', 'Fernández Quispe', 'ana.fernandez@gmail.com', '984567890', '20', 'Aprobado', $hoy]
         ];
 
         $r = 2;

@@ -73,8 +73,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Cód. Certificado</th>
-                                <th>DNI</th>
+                                <th>Nro Documento</th>
                                 <th>Participante</th>
                                 <th>Curso / Capacitación</th>
                                 <th>Horas</th>
@@ -118,12 +117,6 @@ require_once __DIR__ . '/../../layouts/footer.php';
                     data: 'id'
                 },
                 {
-                    data: 'codigo_certificado',
-                    render: function(data) {
-                        return '<span class="font-weight-bold font-size-12 px-2 py-1">' + data + '</span>';
-                    }
-                },
-                {
                     data: 'dni',
                     render: function(data) {
                         return '<span class="">' + data + '</span>';
@@ -157,16 +150,10 @@ require_once __DIR__ . '/../../layouts/footer.php';
                     render: function(data, type, row) {
                         return `
                         <div class="btn-group btn-group-sm" role="group">
-                            <a href="<?= BASE_URL ?>/consulta/pdf/${encodeURIComponent(row.codigo_certificado)}" target="_blank" class="btn btn-outline-info" title="Descargar Certificado PDF" data-no-loader="true">
-                                <i class="fa-solid fa-file-pdf"></i>
-                            </a>
-                            <a href="<?= BASE_URL ?>/verificar/${encodeURIComponent(row.codigo_certificado)}" target="_blank" class="btn btn-outline-success" title="Verificar Digital" data-no-loader="true">
-                                <i class="fa-solid fa-shield-halved"></i>
-                            </a>
                             <a href="<?= BASE_URL ?>/admin/certificados/editar/${row.id}" class="btn btn-outline-primary" title="Editar Certificado">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
-                            <button type="button" class="btn btn-outline-danger btn-eliminar" data-id="${row.id}" data-codigo="${row.codigo_certificado}" title="Eliminar">
+                            <button type="button" class="btn btn-outline-danger btn-eliminar" data-id="${row.id}" data-participante="${row.participante}" title="Eliminar">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
@@ -189,11 +176,11 @@ require_once __DIR__ . '/../../layouts/footer.php';
 
         $(document).on('click', '.btn-eliminar', function() {
             const id = $(this).data('id');
-            const codigo = $(this).data('codigo');
+            const participante = $(this).data('participante') || 'este participante';
 
             Swal.fire({
                 title: '¿Eliminar certificado?',
-                text: `¿Desea anular y eliminar el certificado ${codigo}?`,
+                text: `¿Desea eliminar el certificado emitido a ${participante}?`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',

@@ -53,7 +53,6 @@ require_once __DIR__ . '/../../layouts/header.php';
                     <div class="form-group mb-4">
                         <label class="form-label font-weight-bold font-size-13">Correo Electrónico</label>
                         <input type="email" name="email" class="form-control" placeholder="juan.perez@dominio.com">
-                        <small class="form-text text-muted">Utilizado para notificaciones y envío de constancias.</small>
                     </div>
 
                     <div class="d-flex justify-content-end" style="gap: 10px;">

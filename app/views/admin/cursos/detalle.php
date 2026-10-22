@@ -78,11 +78,10 @@ require_once __DIR__ . '/../../layouts/header.php';
                             <tr>
                                 <th>DNI</th>
                                 <th>Apellidos y Nombres</th>
-                                <th>Cód. Certificado</th>
                                 <th>Nota</th>
                                 <th>Condición</th>
                                 <th>Fecha Emisión</th>
-                                <th class="text-right">Certificado</th>
+                                <th class="text-right">Acción</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -95,11 +94,6 @@ require_once __DIR__ . '/../../layouts/header.php';
                                             <small class="text-muted"><?= htmlspecialchars($a['email'] ?? '') ?></small>
                                         </td>
                                         <td>
-                                            <span class="text-dark font-weight-bold">
-                                                <?= htmlspecialchars($a['codigo_certificado']) ?>
-                                            </span>
-                                        </td>
-                                        <td>
                                             <span class="font-weight-bold text-warning"><?= htmlspecialchars($a['nota'] ?: '-') ?></span>
                                         </td>
                                         <td>
@@ -109,18 +103,15 @@ require_once __DIR__ . '/../../layouts/header.php';
                                             <?= date('d/m/Y', strtotime($a['fecha_emision'])) ?>
                                         </td>
                                         <td class="text-right">
-                                            <a href="<?= BASE_URL ?>/consulta/pdf/<?= urlencode($a['codigo_certificado']) ?>" target="_blank" class="btn btn-sm btn-outline-danger py-1 px-2" title="Descargar Certificado PDF" data-no-loader="true">
-                                                <i class="fa-solid fa-file-pdf"></i>
-                                            </a>
-                                            <a href="<?= BASE_URL ?>/verificar/<?= urlencode($a['codigo_certificado']) ?>" target="_blank" class="btn btn-sm btn-outline-primary py-1 px-2" title="Verificar" data-no-loader="true">
-                                                <i class="fa-solid fa-shield-halved"></i>
+                                            <a href="<?= BASE_URL ?>/admin/certificados/editar/<?= $a['id'] ?>" class="btn btn-sm btn-outline-primary py-1 px-2" title="Editar Certificado">
+                                                <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="7" class="text-center py-4 text-muted">
+                                    <td colspan="6" class="text-center py-4 text-muted">
                                         No hay participantes vinculados a este curso aún.
                                     </td>
                                 </tr>

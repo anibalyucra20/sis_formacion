@@ -440,7 +440,7 @@
                                 </div>
 
                                 <div class="cert-body">
-                                    <div class="row font-size-13 text-secondary mb-2">
+                                    <div class="row font-size-13 text-secondary mb-0">
                                         <div class="col-6 mb-2">
                                             <span class="text-muted d-block font-size-11">Horas Académicas:</span>
                                             <strong><i class="fa-regular fa-clock mr-1 text-primary"></i> <?= $cert['horas'] ?> horas</strong>
@@ -458,17 +458,6 @@
                                             <strong><i class="fa-solid fa-star mr-1 text-warning"></i> <?= htmlspecialchars($cert['nota'] ?: 'Aprobado') ?></strong>
                                         </div>
                                     </div>
-
-                                    <div class="mt-2 pt-2 border-top d-flex align-items-center justify-content-between">
-                                        <span class="font-size-12 text-muted">Cód. Registro:</span>
-                                        <span class=""><?= htmlspecialchars($cert['codigo_certificado']) ?></span>
-                                    </div>
-                                </div>
-
-                                <div class="cert-footer">
-                                    <a href="<?= BASE_URL ?>/verificar/<?= urlencode($cert['codigo_certificado']) ?>" class="btn-verify">
-                                        <i class="fa-solid fa-shield-halved"></i> Validar
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -503,16 +492,16 @@
                         </div>
                         <div class="col-md-4 mb-4">
                             <div class="p-4 bg-white rounded-lg border h-100 shadow-sm" style="border-radius: 14px;">
-                                <div class="text-success mb-3 font-size-28"><i class="fa-solid fa-file-pdf"></i></div>
-                                <h5 class="font-weight-bold" style="font-size: 16px;">Certificados Digitales</h5>
-                                <p class="text-muted font-size-13 mb-0">Descargue el certificado oficial en formato PDF con registro correlativo y firmas institucionales.</p>
+                                <div class="text-success mb-3 font-size-28"><i class="fa-solid fa-graduation-cap"></i></div>
+                                <h5 class="font-weight-bold" style="font-size: 16px;">Acreditación Oficial</h5>
+                                <p class="text-muted font-size-13 mb-0">Visualice las capacitaciones cursadas, horas lectivas acumuladas y condición de aprobación.</p>
                             </div>
                         </div>
                         <div class="col-md-4 mb-4">
                             <div class="p-4 bg-white rounded-lg border h-100 shadow-sm" style="border-radius: 14px;">
                                 <div class="text-warning mb-3 font-size-28"><i class="fa-solid fa-shield-halved"></i></div>
                                 <h5 class="font-weight-bold" style="font-size: 16px;">Verificación Pública</h5>
-                                <p class="text-muted font-size-13 mb-0">Cualquier empleador o entidad puede comprobar la veracidad de la constancia mediante su código único.</p>
+                                <p class="text-muted font-size-13 mb-0">Cualquier empleador o entidad puede comprobar la veracidad de la constancia mediante consulta por DNI.</p>
                             </div>
                         </div>
                     </div>

@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                 <p class="text-muted font-size-13 mb-0">Vinculación individual de participante a un curso con registro correlativo</p>
             </div>
             <div>
-                <a href="<?= BASE_URL ?>/admin/certificados" class="btn btn-outline-secondary font-weight-bold" style="border-radius: 8px;">
+                <a href="<?= BASE_URL ?>/admin/certificados" class="btn btn-outline-info font-weight-bold" style="border-radius: 8px;">
                     <i class="fa-solid fa-arrow-left mr-1"></i> Volver a la Lista
                 </a>
             </div>
@@ -60,29 +60,14 @@ require_once __DIR__ . '/../../layouts/header.php';
                     </div>
 
                     <div class="row">
-                        <!-- Código de Certificado -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label font-weight-bold font-size-13">Código de Certificado <span class="text-danger">*</span></label>
-                            <input type="text" name="codigo_certificado" id="codigo_certificado" class="form-control font-weight-bold" value="<?= htmlspecialchars($siguienteCodigo) ?>" required style="text-transform: uppercase;">
-                            <small class="form-text text-muted">Correlativo sugerido automáticamente. Puede editarlo si tiene un código previo.</small>
-                        </div>
-
-                        <!-- Horas Lectivas -->
-                        <div class="col-md-3 mb-3">
-                            <label class="form-label font-weight-bold font-size-13">Horas Acreditadas <span class="text-danger">*</span></label>
-                            <input type="number" name="horas" id="horas" class="form-control" value="40" min="1" required>
-                        </div>
-
                         <!-- Calificación -->
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label class="form-label font-weight-bold font-size-13">Calificación / Nota</label>
                             <input type="text" name="nota" class="form-control" value="18" placeholder="Ej: 18 o Aprobado">
                         </div>
-                    </div>
 
-                    <div class="row">
                         <!-- Condición -->
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label class="form-label font-weight-bold font-size-13">Condición del Participante <span class="text-danger">*</span></label>
                             <select name="condicion" class="form-control" required>
                                 <option value="Aprobado" selected>Aprobado</option>
@@ -93,7 +78,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                         </div>
 
                         <!-- Fecha de Emisión -->
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label class="form-label font-weight-bold font-size-13">Fecha de Emisión <span class="text-danger">*</span></label>
                             <input type="date" name="fecha_emision" class="form-control" value="<?= date('Y-m-d') ?>" required>
                         </div>
@@ -105,7 +90,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                     </div>
 
                     <div class="d-flex justify-content-end" style="gap: 10px;">
-                        <a href="<?= BASE_URL ?>/admin/certificados" class="btn btn-outline-secondary font-weight-bold px-4">Cancelar</a>
+                        <a href="<?= BASE_URL ?>/admin/certificados" class="btn btn-outline-danger font-weight-bold px-4">Cancelar</a>
                         <button type="submit" class="btn btn-primary font-weight-bold px-4">
                             <i class="fa-solid fa-award mr-1"></i> Emitir Certificado
                         </button>
@@ -119,13 +104,3 @@ require_once __DIR__ . '/../../layouts/header.php';
 <?php
 require_once __DIR__ . '/../../layouts/footer.php';
 ?>
-
-<script>
-    $('#curso_id').on('change', function() {
-        const selected = $(this).find(':selected');
-        const horas = selected.data('horas');
-        if (horas) {
-            $('#horas').val(horas);
-        }
-    });
-</script>
