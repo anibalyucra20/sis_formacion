@@ -27,8 +27,12 @@ class Certificado extends Model
         $params = [];
 
         if (!empty($search)) {
-            $where[] = "(p.dni LIKE :search OR p.nombres LIKE :search OR p.apellidos LIKE :search OR c.nombre LIKE :search)";
-            $params[':search'] = '%' . $search . '%';
+            $where[] = "(p.dni LIKE :s1 OR p.nombres LIKE :s2 OR p.apellidos LIKE :s3 OR c.nombre LIKE :s4)";
+            $term = '%' . $search . '%';
+            $params[':s1'] = $term;
+            $params[':s2'] = $term;
+            $params[':s3'] = $term;
+            $params[':s4'] = $term;
         }
 
         if (!empty($curso_id)) {
@@ -323,8 +327,12 @@ class Certificado extends Model
         $params = [];
 
         if (!empty($search)) {
-            $where[] = "(p.dni LIKE :search OR p.nombres LIKE :search OR p.apellidos LIKE :search OR c.nombre LIKE :search)";
-            $params[':search'] = '%' . $search . '%';
+            $where[] = "(p.dni LIKE :s1 OR p.nombres LIKE :s2 OR p.apellidos LIKE :s3 OR c.nombre LIKE :s4)";
+            $term = '%' . $search . '%';
+            $params[':s1'] = $term;
+            $params[':s2'] = $term;
+            $params[':s3'] = $term;
+            $params[':s4'] = $term;
         }
 
         if (!empty($curso_id)) {

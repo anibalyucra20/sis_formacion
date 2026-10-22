@@ -55,10 +55,8 @@ require_once __DIR__ . '/../../layouts/header.php';
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Código</th>
                                 <th>Nombre del Curso</th>
                                 <th>Horas</th>
-                                <!--<th>Instructor</th>-->
                                 <th>Modalidad</th>
                                 <th>Estado</th>
                                 <th>Certificados</th>
@@ -101,12 +99,6 @@ require_once __DIR__ . '/../../layouts/footer.php';
                     data: 'id'
                 },
                 {
-                    data: 'codigo',
-                    render: function(data) {
-                        return '<span class="badge badge-light border text-primary font-weight-bold font-size-10">' + data + '</span>';
-                    }
-                },
-                {
                     data: 'nombre',
                     render: function(data, type, row) {
                         return '<a href="<?= BASE_URL ?>/admin/cursos/detalle/' + row.id + '" class="font-weight-bold text-dark text-decoration-none">' + data + '</a>';
@@ -118,12 +110,6 @@ require_once __DIR__ . '/../../layouts/footer.php';
                         return '<span class="font-weight-bold">' + data + ' h</span>';
                     }
                 },
-                /*{
-                    data: 'instructor',
-                    render: function(data) {
-                        return data ? data : '<span class="text-muted font-italic">No asignado</span>';
-                    }
-                }*/
                 {
                     data: 'modalidad',
                     render: function(data) {

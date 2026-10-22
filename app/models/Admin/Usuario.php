@@ -27,8 +27,12 @@ class Usuario extends Model
         $params = [];
 
         if (!empty($search)) {
-            $where[] = "(u.nombre LIKE :search OR u.apellidos LIKE :search OR u.email LIKE :search OR u.telefono LIKE :search)";
-            $params[':search'] = '%' . $search . '%';
+            $where[] = "(u.nombre LIKE :s1 OR u.apellidos LIKE :s2 OR u.email LIKE :s3 OR u.telefono LIKE :s4)";
+            $term = '%' . $search . '%';
+            $params[':s1'] = $term;
+            $params[':s2'] = $term;
+            $params[':s3'] = $term;
+            $params[':s4'] = $term;
         }
 
         $sqlWhere = !empty($where) ? ("WHERE " . implode(" AND ", $where)) : "";

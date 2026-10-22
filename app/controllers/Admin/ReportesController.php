@@ -2,10 +2,10 @@
 
 namespace App\Controllers\Admin;
 
-include __DIR__ . '/../../models/Admin/Certificado.php';
-include __DIR__ . '/../../models/Admin/Curso.php';
-include __DIR__ . '/../../models/Admin/Persona.php';
-include __DIR__ . '/../../models/Admin/Configuracion.php';
+require_once __DIR__ . '/../../models/Admin/Certificado.php';
+require_once __DIR__ . '/../../models/Admin/Curso.php';
+require_once __DIR__ . '/../../models/Admin/Persona.php';
+require_once __DIR__ . '/../../models/Admin/Configuracion.php';
 
 use Core\Controller;
 use Core\Auth;
@@ -66,14 +66,24 @@ class ReportesController extends Controller
         $hasta     = !empty($_GET['hasta']) ? trim($_GET['hasta']) : null;
         $dni       = !empty($_GET['dni']) ? trim($_GET['dni']) : null;
 
-        $result = $this->certModel->getReporteFiltrado($search, $curso_id, $desde, $hasta, $dni, $length, $start, $orderCol, $orderDir);
+        try {
+            $result = $this->certModel->getReporteFiltrado($search, $curso_id, $desde, $hasta, $dni, $length, $start, $orderCol, $orderDir);
 
-        echo json_encode([
-            'draw'            => $draw,
-            'recordsTotal'    => $result['recordsTotal'],
-            'recordsFiltered' => $result['recordsFiltered'],
-            'data'            => $result['data']
-        ], JSON_UNESCAPED_UNICODE);
+            echo json_encode([
+                'draw'            => $draw,
+                'recordsTotal'    => $result['recordsTotal'],
+                'recordsFiltered' => $result['recordsFiltered'],
+                'data'            => $result['data']
+            ], JSON_UNESCAPED_UNICODE);
+        } catch (\Throwable $e) {
+            echo json_encode([
+                'draw'            => $draw,
+                'recordsTotal'    => 0,
+                'recordsFiltered' => 0,
+                'data'            => [],
+                'error'           => $e->getMessage()
+            ], JSON_UNESCAPED_UNICODE);
+        }
         exit;
     }
 

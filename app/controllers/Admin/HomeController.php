@@ -2,10 +2,10 @@
 
 namespace App\Controllers\Admin;
 
-include __DIR__ . '/../../models/Admin/Curso.php';
-include __DIR__ . '/../../models/Admin/Persona.php';
-include __DIR__ . '/../../models/Admin/Certificado.php';
-include __DIR__ . '/../../models/Admin/Usuario.php';
+require_once __DIR__ . '/../../models/Admin/Curso.php';
+require_once __DIR__ . '/../../models/Admin/Persona.php';
+require_once __DIR__ . '/../../models/Admin/Certificado.php';
+require_once __DIR__ . '/../../models/Admin/Usuario.php';
 
 use Core\Controller;
 use App\Models\Admin\Curso;

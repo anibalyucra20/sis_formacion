@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Admin;
 
-include __DIR__ . '/../../models/Admin/Usuario.php';
+require_once __DIR__ . '/../../models/Admin/Usuario.php';
 require_once __DIR__ . '/../../utils/Mailer.php';
 
 use Core\Controller;
@@ -40,14 +40,24 @@ class UsuariosController extends Controller
         $orderDir  = isset($_GET['order'][0]['dir']) ? $_GET['order'][0]['dir'] : 'asc';
         $search    = isset($_GET['search']['value']) ? trim($_GET['search']['value']) : '';
 
-        $result = $this->model->getPaginated($search, $length, $start, $orderCol, $orderDir);
+        try {
+            $result = $this->model->getPaginated($search, $length, $start, $orderCol, $orderDir);
 
-        echo json_encode([
-            'draw'            => $draw,
-            'recordsTotal'    => $result['recordsTotal'],
-            'recordsFiltered' => $result['recordsFiltered'],
-            'data'            => $result['data']
-        ], JSON_UNESCAPED_UNICODE);
+            echo json_encode([
+                'draw'            => $draw,
+                'recordsTotal'    => $result['recordsTotal'],
+                'recordsFiltered' => $result['recordsFiltered'],
+                'data'            => $result['data']
+            ], JSON_UNESCAPED_UNICODE);
+        } catch (\Throwable $e) {
+            echo json_encode([
+                'draw'            => $draw,
+                'recordsTotal'    => 0,
+                'recordsFiltered' => 0,
+                'data'            => [],
+                'error'           => $e->getMessage()
+            ], JSON_UNESCAPED_UNICODE);
+        }
         exit;
     }
 

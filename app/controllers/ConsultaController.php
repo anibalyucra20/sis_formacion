@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-include __DIR__ . '/../models/Admin/Certificado.php';
-include __DIR__ . '/../models/Admin/Configuracion.php';
+require_once __DIR__ . '/../models/Admin/Certificado.php';
+require_once __DIR__ . '/../models/Admin/Configuracion.php';
 
 use Core\Controller;
 use App\Models\Admin\Certificado;

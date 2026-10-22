@@ -26,13 +26,11 @@ class Curso extends Model
     {
         $columnas = [
             0 => 'c.id',
-            1 => 'c.codigo',
-            2 => 'c.nombre',
-            3 => 'c.horas_academicas',
-            4 => 'c.instructor',
-            5 => 'c.modalidad',
-            6 => 'c.estado',
-            7 => 'total_certificados'
+            1 => 'c.nombre',
+            2 => 'c.horas_academicas',
+            3 => 'c.modalidad',
+            4 => 'c.estado',
+            5 => 'total_certificados'
         ];
 
         $ordenarPor = $columnas[$orderCol] ?? 'c.id';
@@ -42,8 +40,12 @@ class Curso extends Model
         $params = [];
 
         if (!empty($search)) {
-            $where[] = "(c.codigo LIKE :search OR c.nombre LIKE :search OR c.instructor LIKE :search OR c.descripcion LIKE :search)";
-            $params[':search'] = '%' . $search . '%';
+            $where[] = "(c.codigo LIKE :s1 OR c.nombre LIKE :s2 OR c.instructor LIKE :s3 OR c.descripcion LIKE :s4)";
+            $term = '%' . $search . '%';
+            $params[':s1'] = $term;
+            $params[':s2'] = $term;
+            $params[':s3'] = $term;
+            $params[':s4'] = $term;
         }
 
         if (!empty($estado)) {

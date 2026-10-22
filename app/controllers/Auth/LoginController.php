@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Auth;
 
-include __DIR__ . '/../../models/Admin/Usuario.php';
+require_once __DIR__ . '/../../models/Admin/Usuario.php';
 require_once __DIR__ . '/../../utils/Mailer.php';
 
 use Core\Controller;

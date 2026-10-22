@@ -40,8 +40,13 @@ class Persona extends Model
         $params = [];
 
         if (!empty($search)) {
-            $where[] = "(p.dni LIKE :search OR p.nombres LIKE :search OR p.apellidos LIKE :search OR p.email LIKE :search OR p.telefono LIKE :search)";
-            $params[':search'] = '%' . $search . '%';
+            $where[] = "(p.dni LIKE :s1 OR p.nombres LIKE :s2 OR p.apellidos LIKE :s3 OR p.email LIKE :s4 OR p.telefono LIKE :s5)";
+            $term = '%' . $search . '%';
+            $params[':s1'] = $term;
+            $params[':s2'] = $term;
+            $params[':s3'] = $term;
+            $params[':s4'] = $term;
+            $params[':s5'] = $term;
         }
 
         $sqlWhere = !empty($where) ? ("WHERE " . implode(" AND ", $where)) : "";
